@@ -1,6 +1,6 @@
 {
   "name": "storybook-addon-themes",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A storybook addon to switch between different themes for your preview",
   "keywords": [
     "addon",

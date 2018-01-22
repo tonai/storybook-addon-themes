@@ -21,7 +21,7 @@
     "url": "https://github.com/tonai/storybook-addon-themes.git"
   },
   "scripts": {
-    "prepare": "node ./scripts/prepare.js"
+    "prepublish": "node ./scripts/prepare.js"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

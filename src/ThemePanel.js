@@ -1,124 +1,161 @@
+import { document } from 'global';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import addons from '@storybook/addons';
 
+import styled from '@emotion/styled';
+
+import Events from './constants';
 import Swatch from './Swatch';
 
-const style = {
-  font: {
-    fontFamily:
-      "-apple-system,'.SFNSText-Regular', 'San Francisco', Roboto, 'Segoe UI', 'Helvetica Neue', 'Lucida Grande', sans-serif",
-    fontSize: '14px',
-  },
-};
+const Wrapper = styled.div({
+  padding: 20,
+});
+
+const Title = styled.h5({
+  fontSize: 16,
+});
+
+const Pre = styled.pre(({ theme }) => ({
+  padding: '30px',
+  display: 'block',
+  background: theme.fillColor,
+  marginTop: '15px',
+  lineHeight: '1.75em',
+}));
+
+const List = styled.div({
+  display: 'inline-block',
+  padding: 15,
+});
+const Item = styled.div({
+  display: 'inline-block',
+  padding: 5,
+});
+
+const storybookIframe = 'storybook-preview-iframe';
 
 const defaultTheme = {
-  name: 'default',
   class: '',
   color: 'transparent',
+  default: true,
+  name: 'default',
 };
 
 const instructionsHtml = `
-import { storiesOf } from "@storybook/react";
-import themes from "storybook-addon-themes";
-storiesOf("First Component", module)
-  .addDecorator(themes([
-    { name: "twitter", class: 'theme-twt', color: "#00aced" },
-    { name: "facebook", class: 'theme-fb', color: "#3b5998" },
-  ]))
-  .add("First Button", () => <button>Click me</button>);
+import { storiesOf } from '@storybook/react';
+import { withThemes } from 'storybook-addon-themes';
+
+storiesOf('Button', module)
+  .addDecorator(
+    withThemes([
+      { name: "twitter", class: "theme-twt", color: "#00aced", default: true },
+      { name: "facebook", class: "theme-fb", color: "#3b5998" },
+    ])
+  )
+  .add('with text', () => <button>Click me</button>);
 `.trim();
 
 const Instructions = () => (
-  <div style={Object.assign({ padding: '20px' }, style.font)}>
-    <h5 style={{ fontSize: '16px' }}>Setup Instructions</h5>
+  <Wrapper>
+    <Title>Setup Instructions</Title>
     <p>
-      Please add the themes decorator definition to your story. The themes decorate accepts
-      an array of items, which should include a name for your theme
-      and the corresponding color / image value.
+      Please add the theme decorator definition to your story. The theme decorate accepts
+      an array of items, which should include a name for your color (preferably the css class name)
+      , a corresponding color / image value and the css class that will be added.
     </p>
     <p>Below is an example of how to add the theme decorator to your story definition.</p>
-    <pre
-      style={{
-        padding: '30px',
-        display: 'block',
-        background: 'rgba(19,19,19,0.9)',
-        color: 'rgba(255,255,255,0.95)',
-        marginTop: '15px',
-        lineHeight: '1.75em',
-      }}
-    >
+    <Pre>
       <code>{instructionsHtml}</code>
-    </pre>
-  </div>
+    </Pre>
+  </Wrapper>
 );
 
 export default class ThemePanel extends Component {
   constructor(props) {
     super(props);
 
-    const { channel, api } = props;
+    this.state = { themes: [] };
+  }
 
-    // A channel is explicitly passed in for testing
-    if (channel) {
-      this.channel = channel;
-    } else {
-      this.channel = addons.getChannel();
+  componentDidMount() {
+    const { api, channel } = this.props;
+    this.iframe = document.getElementById(storybookIframe);
+
+    if (!this.iframe) {
+      throw new Error('Cannot find Storybook iframe');
     }
 
-    this.state = {
-      themes: [],
-      theme: {}
-    };
+    channel.on(Events.SET, data => {
+      const themes = [...data];
 
-    this.channel.on('theme-set', themes => {
       this.setState({ themes });
-      const currentTheme = api.getQueryParam('theme');
+      const current = api.getQueryParam('theme');
+      const defaultOrFirst = themes.find(x => x.default) || themes[0];
 
-      if (currentTheme) {
-        this.setThemeInPreview(currentTheme);
-      } else if (themes.filter(x => x.default).length) {
-        const defaultTheme = themes.filter(x => x.default);
-        this.setThemeInPreview(defaultTheme[0]);
+      // debugger;
+
+      const foundTheme =
+        current && themes.find(theme => theme.name === decodeURI(current) || theme.class === current || theme.color === current);
+
+      if (foundTheme) {
+        this.updateIframe(foundTheme.class);
+      } else if (defaultOrFirst) {
+        this.updateIframe(defaultOrFirst.class);
+        api.setQueryParams({ theme: defaultOrFirst.class });
       }
     });
 
-    this.channel.on('theme-unset', () => {
+    channel.on(Events.UNSET, () => {
       this.setState({ themes: [] });
-      api.setQueryParams({ theme: null });
+      this.updateIframe();
     });
   }
 
-  setThemeInPreview = theme => {
-    this.setState({ theme });
-    this.channel.emit('theme', theme);
+  setThemeFromSwatch = themeClass => {
+    const { api } = this.props;
+    this.updateIframe(themeClass);
+    api.setQueryParams({ theme: themeClass });
   };
 
-  setThemeFromSwatch = theme => {
-    this.setThemeInPreview(theme);
-    this.props.api.setQueryParams({ theme });
-  };
+  updateIframe(themeClass) {
+    const { themes = [] } = this.state;
+    const iframeDocument = this.iframe.contentDocument || this.iframe.contentWindow.document;
+    const { body } = iframeDocument;
+
+    themes
+      .filter(theme => theme.class)
+      .forEach(theme => body.classList.remove(theme.class));
+
+    if (themeClass) {
+      body.classList.add(themeClass);
+    }
+  }
 
   render() {
-    const themes = [...this.state.themes];
+    const { active } = this.props;
+    const { themes = [] } = this.state;
 
+    if (!active) {
+      return null;
+    }
     if (!themes.length) return <Instructions />;
 
     const hasDefault = themes.filter(x => x.default).length;
     if (!hasDefault) themes.push(defaultTheme);
 
     return (
-      <div style={{ display: 'inline-block', padding: '15px' }}>
-        {themes.map(theme => (
-          <div key={theme.name} style={{ display: 'inline-block', padding: '5px' }}>
-            <Swatch active={theme.name === this.state.theme.name} theme={theme} setTheme={this.setThemeFromSwatch} />
-          </div>
+      <List>
+        {themes.map((props) => (
+          <Item key={`${props.name} ${props.class}`}>
+            <Swatch {...props} setTheme={this.setThemeFromSwatch} />
+          </Item>
         ))}
-      </div>
+      </List>
     );
   }
 }
 ThemePanel.propTypes = {
+  active: PropTypes.bool.isRequired,
   api: PropTypes.shape({
     getQueryParam: PropTypes.func,
     setQueryParams: PropTypes.func,

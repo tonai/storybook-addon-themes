@@ -1,6 +1,6 @@
 {
   "name": "storybook-addon-themes",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "description": "A storybook addon to switch between different themes for your preview",
   "keywords": [
     "addon",
@@ -21,27 +21,35 @@
     "url": "https://github.com/tonai/storybook-addon-themes.git"
   },
   "scripts": {
-    "prepublish": "node ./scripts/prepare.js"
-  },
-  "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.0",
-    "babel-eslint": "^8.2.1",
-    "babel-plugin-transform-md-import-to-string": "^1.0.6",
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-polyfill": "^6.26.0",
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-react": "^6.24.1",
-    "babel-preset-stage-0": "^6.24.1",
-    "chalk": "^2.3.0",
-    "npmlog": "^4.1.2",
-    "shelljs": "^0.8.0"
+    "prepare": "node ./scripts/prepare.js"
   },
   "dependencies": {
-    "prop-types": "^15.6.0"
+    "@emotion/styled": "^0.10.6",
+    "@storybook/addons": "4.1.14",
+    "@storybook/core-events": "4.1.14",
+    "chalk": "^2.4.1",
+    "core-js": "^2.5.7",
+    "eventemitter3": "^3.1.0",
+    "global": "^4.3.2",
+    "npmlog": "^4.1.2",
+    "prop-types": "^15.6.2",
+    "shelljs": "^0.8.2",
+    "util-deprecate": "^1.0.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.2.0",
+    "@babel/core": "^7.2.0",
+    "@babel/plugin-proposal-class-properties": "^7.2.0",
+    "@babel/plugin-proposal-export-default-from": "^7.2.0",
+    "@babel/preset-env": "^7.2.0",
+    "@babel/preset-flow": "^7.0.0",
+    "@babel/preset-react": "^7.0.0",
+    "babel-plugin-dynamic-import-node": "^2.2.0",
+    "babel-plugin-emotion": "^9.2.11",
+    "babel-plugin-macros": "^2.4.2",
+    "babel-plugin-require-context-hook": "^1.0.0"
   },
   "peerDependencies": {
-    "@storybook/addons": "^3.3.0",
     "react": "*"
   }
 }

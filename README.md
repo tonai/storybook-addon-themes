@@ -1,4 +1,4 @@
-# Storybook Addon Backgrounds
+# Storybook Addon Themes
 
 Greatly inspired by [@storybook/addon-backgrounds](https://github.com/storybooks/storybook/tree/next/addons/backgrounds).
 

@@ -6,7 +6,11 @@ This Storybook Theme Decorator can be used to add a custom HTML class to the the
 
 This addon works with Storybook for:
 
--   [React](https://github.com/storybooks/storybook/tree/master/app/react)
+- [React](https://github.com/storybooks/storybook/tree/master/app/react)
+
+## Compatibility
+
+This version is compatible with storybook version `3.x.x`.
 
 ## Installation
 
@@ -18,9 +22,9 @@ npm i --save storybook-addon-themes
 
 Then create a file called `addons.js` in your storybook config.
 
-  Add following content to it:
+Add following content to it:
 
-  ```js
+```js
 import 'storybook-addon-themes/register';
 ```
 

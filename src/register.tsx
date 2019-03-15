@@ -1,0 +1,14 @@
+import React from 'react';
+import { addons, types } from '@storybook/addons';
+
+import { ADDON_ID } from './constants';
+import { ThemeSelector } from './containers';
+
+addons.register(ADDON_ID, api => {
+  addons.add(ADDON_ID, {
+    title: 'Themes',
+    type: types.TOOL,
+    match: ({ viewMode }) => viewMode === 'story',
+    render: () => <ThemeSelector api={api} />,
+  });
+});

@@ -1,6 +1,6 @@
 {
   "name": "storybook-addon-themes",
-  "version": "4.0.0",
+  "version": "5.0.0",
   "description": "A storybook addon to switch between different themes for your preview",
   "keywords": [
     "addon",
@@ -12,44 +12,51 @@
   "bugs": {
     "url": "https://github.com/tonai/storybook-addon-themes/issues"
   },
-  "license": "MIT",
-  "author": "tonai",
-  "main": "dist/index.js",
-  "jsnext:main": "src/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/tonai/storybook-addon-themes.git"
   },
+  "license": "MIT",
+  "author": "tonai",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "prepare": "node ./scripts/prepare.js"
   },
   "dependencies": {
-    "@emotion/styled": "^0.10.6",
-    "@storybook/addons": "4.1.14",
-    "@storybook/core-events": "4.1.14",
-    "chalk": "^2.4.1",
-    "core-js": "^2.5.7",
-    "eventemitter3": "^3.1.0",
+    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
+    "@storybook/addons": "5.1.0-alpha.6",
+    "@storybook/client-logger": "5.1.0-alpha.6",
+    "@storybook/components": "5.1.0-alpha.6",
+    "@storybook/core-events": "5.1.0-alpha.6",
+    "@storybook/theming": "5.1.0-alpha.6",
+    "core-js": "^2.6.5",
     "global": "^4.3.2",
-    "npmlog": "^4.1.2",
-    "prop-types": "^15.6.2",
-    "shelljs": "^0.8.2",
+    "memoizerific": "^1.11.3",
+    "react": "^16.8.4",
     "util-deprecate": "^1.0.2"
   },
   "devDependencies": {
-    "@babel/cli": "^7.2.0",
-    "@babel/core": "^7.2.0",
-    "@babel/plugin-proposal-class-properties": "^7.2.0",
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.2.4",
+    "@babel/plugin-proposal-class-properties": "^7.3.3",
     "@babel/plugin-proposal-export-default-from": "^7.2.0",
-    "@babel/preset-env": "^7.2.0",
+    "@babel/preset-env": "^7.3.4",
     "@babel/preset-flow": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
+    "@types/react": "^16.8.4",
+    "@types/util-deprecate": "^1.0.0",
+    "@types/webpack-env": "^1.13.7",
     "babel-plugin-dynamic-import-node": "^2.2.0",
-    "babel-plugin-emotion": "^9.2.11",
-    "babel-plugin-macros": "^2.4.2",
-    "babel-plugin-require-context-hook": "^1.0.0"
+    "babel-plugin-emotion": "^10.0.7",
+    "babel-plugin-macros": "^2.4.5",
+    "babel-plugin-require-context-hook": "^1.0.0",
+    "chalk": "^2.4.2",
+    "npmlog": "^4.1.2",
+    "shelljs": "^0.8.3",
+    "typescript": "^3.3.3333"
   },
-  "peerDependencies": {
-    "react": "*"
+  "publishConfig": {
+    "access": "public"
   }
 }

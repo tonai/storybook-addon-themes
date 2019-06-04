@@ -4,4 +4,5 @@ export interface ThemeSelectorItem {
   onClick: () => void;
   value: string;
   right?: any;
+  active: boolean;
 }

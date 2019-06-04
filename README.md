@@ -2,7 +2,7 @@
 
 Greatly inspired by [@storybook/addon-backgrounds](https://github.com/storybooks/storybook/tree/next/addons/backgrounds).
 
-This Storybook Theme Decorator can be used to add a custom HTML class to the the preview in [Storybook](https://storybook.js.org).
+This Storybook Theme Decorator can be used to add a custom HTML class or classes to the the preview in [Storybook](https://storybook.js.org).
 
 ## Compatibility
 
@@ -85,4 +85,20 @@ storiesOf('Button', module)
   .add('example 2', () => <button>Click me</button>, {
     themes: { disable: true },
   });
+```
+
+Also you can add multiple classes by passing an array in `class` parameter:
+
+```js
+import React from 'react';
+import { storiesOf } from '@storybook/react';
+
+storiesOf('Button', module)
+  .addParameters({
+    themes: [
+      { name: 'twitter', class: ['theme-twt', 'light-mode'], color: '#00aced', default: true },
+      { name: 'facebook', class: ['theme-fb', 'dark-mode'], color: '#3b5998' },
+    ],
+  })
+  .add('with text', () => <button>Click me</button>);
 ```

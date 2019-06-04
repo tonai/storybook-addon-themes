@@ -22,14 +22,24 @@ export function Theme(props: Props): null {
     const iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
     const { body } = iframeDocument;
 
-    // Add selected theme class.
+    // Add selected theme class(es).
     if (selectedTheme) {
-      body.classList.add(selectedTheme.class);
+      if (typeof selectedTheme.class === 'string') {
+        body.classList.add(selectedTheme.class)
+      } else { // string[]
+        body.classList.add(...selectedTheme.class)
+      }
     }
 
     return () => themes
       .filter(theme => theme.class)
-      .forEach(theme => body.classList.remove(theme.class));
+      .forEach(theme => {
+        if (typeof theme.class === 'string') {
+          body.classList.remove(theme.class)
+        } else { // string[]
+          body.classList.remove(...theme.class)
+        }
+      });
   });
 
   return null;

@@ -17,7 +17,8 @@ const createThemeSelectorItem = memoize(1000)(
     title: string,
     color: string,
     hasSwatch: boolean,
-    change: (arg: { selected: string; expanded: boolean }) => void
+    change: (arg: { selected: string; expanded: boolean }) => void,
+    active: boolean,
   ): ThemeSelectorItem => ({
     id,
     title,
@@ -26,6 +27,7 @@ const createThemeSelectorItem = memoize(1000)(
     },
     value: id,
     right: hasSwatch ? <ColorIcon background={color} /> : undefined,
+    active,
   })
 );
 
@@ -64,7 +66,7 @@ const getDisplayableState = memoize(10)(
 
     if (selectedThemeName !== 'none') {
       availableThemeSelectorItems.push(
-        createThemeSelectorItem('none', 'Clear theme', 'transparent', null, change)
+        createThemeSelectorItem('none', 'Clear theme', 'transparent', null, change, false)
       );
     }
 
@@ -72,7 +74,7 @@ const getDisplayableState = memoize(10)(
       availableThemeSelectorItems = [
         ...availableThemeSelectorItems,
         ...list.map(({ color, name }) =>
-          createThemeSelectorItem(name, name, color, true, change)
+          createThemeSelectorItem(name, name, color, true, change, name === selectedThemeName)
         ),
       ];
       selectedTheme = list.find(theme => theme.name === selectedThemeName)

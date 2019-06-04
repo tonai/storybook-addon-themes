@@ -1,5 +1,5 @@
 export interface ThemeConfig {
-  class: string,
+  class: string | string[],
   color: string;
   name: string;
   default?: boolean;

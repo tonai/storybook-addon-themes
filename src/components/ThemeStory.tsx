@@ -2,15 +2,15 @@ import React, { useEffect } from 'react';
 // @ts-ignore
 import { document } from 'global';
 
-import { ThemeConfig } from '../models';
+import { Theme } from '../models';
 
 interface Props {
   iframeId: string;
-  selectedTheme: ThemeConfig;
-  themes: ThemeConfig[];
+  selectedTheme: Theme;
+  themes: Theme[];
 }
 
-export function Theme(props: Props): null {
+export const ThemeStory: React.FC<Props> = (props) => {
   const { iframeId, selectedTheme, themes } = props;
 
   useEffect(() => {

@@ -1,7 +1,3 @@
-export interface Api {
-  emit(type: string, event: any): void;
-  on(type: string, callback: (data: any) => void): void;
-  once(type: string, callback: (data: any) => void): void;
-  off(type: string, callback: (data: any) => void): void;
-  getCurrentStoryData(): any;
-};
+import { SubAPI as StoriesAPI } from '@storybook/api/dist/modules/stories'
+import { SubAPI as ChannelAPI } from '@storybook/api/dist/modules/channel'
+export interface Api extends StoriesAPI, ChannelAPI {}

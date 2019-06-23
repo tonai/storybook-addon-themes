@@ -6,7 +6,7 @@ const defaultOptions: ThemeConfig = {
 };
 
 export function getConfigFromApi(api: Api): ThemeConfig {
-  const data = api.getCurrentStoryData();
+  const data = api.getCurrentStoryData() as any as { parameters: { [parameterName: string]: any } };
   return getConfig(data && data.parameters && data.parameters[PARAM_KEY]);
 }
 

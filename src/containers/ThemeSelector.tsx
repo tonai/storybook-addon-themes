@@ -5,9 +5,10 @@ import { SET_STORIES } from '@storybook/core-events';
 
 import { Icons, IconButton, WithTooltip, TooltipLinkList } from '@storybook/components';
 
-import { PARAM_KEY } from '../constants';
-import { ColorIcon, Theme } from '../components';
-import { ThemeConfig, ThemeSelectorItem } from '../models';
+import { CHANGE, DECORATOR, THEME } from '../constants';
+import { ColorIcon, ThemeStory } from '../components';
+import { Api, Theme, ThemeSelectorItem } from '../models';
+import { getConfigFromApi, getSelectedTheme } from '../shared';
 
 const iframeId = 'storybook-preview-iframe';
 
@@ -31,38 +32,13 @@ const createThemeSelectorItem = memoize(1000)(
   })
 );
 
-const getSelectedTheme = (
-  list: ThemeConfig[],
-  currentSelectedValue: string
-): string => {
-  if (!list.length) {
-    return 'none';
-  }
-
-  if (currentSelectedValue === 'none') {
-    return currentSelectedValue;
-  }
-
-  if (list.find(i => i.name === currentSelectedValue)) {
-    return currentSelectedValue;
-  }
-
-  if (list.find(i => i.default)) {
-    return list.find(i => i.default).name;
-  }
-
-  return 'none';
-};
-
 const getDisplayableState = memoize(10)(
   (props: ThemeToolProps, state: ThemeToolState, change) => {
-    const data = props.api.getCurrentStoryData();
-    const list: ThemeConfig[] = (data && data.parameters && data.parameters[PARAM_KEY]) || [];
-
+    const { list } = getConfigFromApi(props.api);
     const selectedThemeName = getSelectedTheme(list, state.selected);
 
     let availableThemeSelectorItems: ThemeSelectorItem[] = [];
-    let selectedTheme: ThemeConfig;
+    let selectedTheme: Theme;
 
     if (selectedThemeName !== 'none') {
       availableThemeSelectorItems.push(
@@ -77,7 +53,7 @@ const getDisplayableState = memoize(10)(
           createThemeSelectorItem(name, name, color, true, change, name === selectedThemeName)
         ),
       ];
-      selectedTheme = list.find(theme => theme.name === selectedThemeName)
+      selectedTheme = list.find(theme => theme.name === selectedThemeName);
     }
 
     return {
@@ -89,48 +65,57 @@ const getDisplayableState = memoize(10)(
 );
 
 interface ThemeToolProps {
-  api: {
-    on(event: string, callback: (data: any) => void): void;
-    off(event: string, callback: (data: any) => void): void;
-    getCurrentStoryData(): any;
-  };
+  api: Api;
 }
 
 interface ThemeToolState {
+  decorator: boolean,
   items: ThemeSelectorItem[];
   selected: string;
   expanded: boolean;
 }
 
 export class ThemeSelector extends Component<ThemeToolProps, ThemeToolState> {
-  private listener = () => {
-    this.setState({ selected: null });
+  state: ThemeToolState = {
+    decorator: false,
+    items: [],
+    selected: null,
+    expanded: false,
   };
+  
+  private setStories = () => this.setState({ selected: null });
 
-  constructor(props: ThemeToolProps) {
-    super(props);
+  private setTheme = (theme: string) => this.setState({ selected: theme });
 
-    this.state = {
-      items: [],
-      selected: null,
-      expanded: false,
-    };
-  }
+  private setDecorator = () => this.setState({ decorator: true });
 
   componentDidMount() {
     const { api } = this.props;
-    api.on(SET_STORIES, this.listener);
+    api.on(SET_STORIES, this.setStories);
+    api.on(THEME, this.setTheme);
+    api.on(DECORATOR, this.setDecorator);
   }
 
   componentWillUnmount() {
     const { api } = this.props;
-    api.off(SET_STORIES, this.listener);
+    api.off(SET_STORIES, this.setStories);
+    api.off(THEME, this.setTheme);
+    api.off(DECORATOR, this.setDecorator);
   }
 
-  change = (args: { selected: string; expanded: boolean }) => this.setState(args);
+  change = (args: { selected: string; expanded: boolean }) => {
+    const { selected } = args;
+    const { api } = this.props;
+    const { decorator } = this.state;
+    
+    this.setState(args);
+    if (decorator) {
+      api.emit(CHANGE, selected);
+    }
+  };
 
   render() {
-    const { expanded } = this.state;
+    const { decorator, expanded } = this.state;
     const { items, selectedTheme, themes } = getDisplayableState(
       this.props,
       this.state,
@@ -139,7 +124,9 @@ export class ThemeSelector extends Component<ThemeToolProps, ThemeToolState> {
 
     return items.length ? (
       <Fragment>
-        <Theme iframeId={iframeId} selectedTheme={selectedTheme} themes={themes} />
+        {!decorator && (
+          <ThemeStory iframeId={iframeId} selectedTheme={selectedTheme} themes={themes} />
+        )}
         <WithTooltip
           placement="top"
           trigger="click"

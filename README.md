@@ -14,23 +14,44 @@ This version is compatible with storybook version `5.x.x`.
 npm i -D storybook-addon-themes
 ```
 
-## Configuration
+## Getting started
 
-Then create a file called `addons.js` in your storybook config.
-
-Add following content to it:
+Then, configure it as an addon by adding it to your `addons.js` file (located in the Storybook config directory):
 
 ```js
 import 'storybook-addon-themes/register';
 ```
 
-## Usage
+## Basic usage
 
-Then write your stories like this:
+Use the decorator in your stories:
 
 ```js
 import React from 'react';
-import { storiesOf } from '@storybook/react';
+import { storiesOf } from '@storybook/react'; // <- or your storybook framework
+import { withThemes } from 'storybook-addon-themes';
+
+storiesOf('Button', module)
+  .addDecorator(withThemes)
+  .add('with text', () => <button>Click me</button>);
+```
+
+Or setup the decorator globally in the `config.js` file (located in the Storybook config directory):
+
+```js
+import { addDecorator } from '@storybook/react'; // <- or your storybook framework
+import { withThemes } from 'storybook-addon-themes';
+
+addDecorator(withThemes);
+```
+
+## Configuration
+
+Configure the themes in your stories like this:
+
+```js
+import React from 'react';
+import { storiesOf } from '@storybook/react'; // <- or your storybook framework
 
 storiesOf('Button', module)
   .addParameters({
@@ -42,7 +63,7 @@ storiesOf('Button', module)
   .add('with text', () => <button>Click me</button>);
 ```
 
-You can add the themes to all stories with `addParameters` in `.storybook/config.js`:
+Or globally in the `config.js` file:
 
 ```js
 import { addParameters } from '@storybook/react'; // <- or your storybook framework
@@ -55,7 +76,7 @@ addParameters({
 });
 ```
 
-If you want to override themes for a single story or group of stories, pass the `themes` parameter:
+And if you want to override themes for a single story or group of stories, pass the `themes` parameter:
 
 ```js
 import React from 'react';
@@ -102,3 +123,13 @@ storiesOf('Button', module)
   })
   .add('with text', () => <button>Click me</button>);
 ```
+
+## Usage without the decorator
+
+You can setup this addon without using the decorator.
+
+In this case the classes will be added to the `body` element.
+
+But in this case your theme will not be visible by other addons (like [@storybook/addon-backgrounds](https://github.com/storybookjs/storybook/tree/next/addons/storyshots)).
+
+Also this usage is considered as deprecated and may be removed in the next versions.

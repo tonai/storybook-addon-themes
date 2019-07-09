@@ -1,2 +1,3 @@
 export * from './ColorIcon';
-export * from './Theme';
+export * from './ThemeDecorator';
+export * from './ThemeStory';

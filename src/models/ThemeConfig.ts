@@ -1,6 +1,5 @@
+import { Theme } from "./Theme";
+
 export interface ThemeConfig {
-  class: string | string[],
-  color: string;
-  name: string;
-  default?: boolean;
+  list: Theme[]
 }

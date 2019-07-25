@@ -22,35 +22,11 @@ Then, configure it as an addon by adding it to your `addons.js` file (located in
 import 'storybook-addon-themes/register';
 ```
 
-## Basic usage
-
-Use the decorator in your stories:
-
-```js
-import React from 'react';
-import { storiesOf } from '@storybook/react'; // <- or your storybook framework
-import { withThemes } from 'storybook-addon-themes';
-
-storiesOf('Button', module)
-  .addDecorator(withThemes)
-  .add('with text', () => <button>Click me</button>);
-```
-
-Or setup the decorator globally in the `config.js` file (located in the Storybook config directory):
-
-```js
-import { addDecorator } from '@storybook/react'; // <- or your storybook framework
-import { withThemes } from 'storybook-addon-themes';
-
-addDecorator(withThemes);
-```
-
 ## Configuration
 
 Configure the themes in your stories like this:
 
 ```js
-import React from 'react';
 import { storiesOf } from '@storybook/react'; // <- or your storybook framework
 
 storiesOf('Button', module)
@@ -79,7 +55,6 @@ addParameters({
 And if you want to override themes for a single story or group of stories, pass the `themes` parameter:
 
 ```js
-import React from 'react';
 import { storiesOf } from '@storybook/react';
 
 storiesOf('Button', module)
@@ -94,7 +69,6 @@ storiesOf('Button', module)
 If you don't want to use themes for a story, you can set the `themes` parameter to `[]`, or use `{ disable: true }` to skip the addon:
 
 ```js
-import React from 'react';
 import { storiesOf } from '@storybook/react';
 
 storiesOf('Button', module)
@@ -111,7 +85,6 @@ storiesOf('Button', module)
 Also you can add multiple classes by passing an array in `class` parameter:
 
 ```js
-import React from 'react';
 import { storiesOf } from '@storybook/react';
 
 storiesOf('Button', module)
@@ -124,12 +97,35 @@ storiesOf('Button', module)
   .add('with text', () => <button>Click me</button>);
 ```
 
-## Usage without the decorator
+## Usage with decorator
 
-You can setup this addon without using the decorator.
+By default the classes will be added to the `body` element.
 
-In this case the classes will be added to the `body` element.
+But in this case your theme will not be visible by other addons (like [@storybook/addon-storyshots](https://github.com/storybookjs/storybook/tree/next/addons/storyshots)).
 
-But in this case your theme will not be visible by other addons (like [@storybook/addon-backgrounds](https://github.com/storybookjs/storybook/tree/next/addons/storyshots)).
+To fix this you can add the `withThemes` decorator in your stories:
 
-Also this usage is considered as deprecated and may be removed in the next versions.
+```js
+import { storiesOf } from '@storybook/react'; // <- or your storybook framework
+import { withThemes } from 'storybook-addon-themes';
+
+storiesOf('Button', module)
+  .addDecorator(withThemes)
+  .add('with text', () => <button>Click me</button>);
+```
+
+Or setup the decorator globally in the `config.js` file (located in the Storybook config directory):
+
+```js
+import { addDecorator } from '@storybook/react'; // <- or your storybook framework
+import { withThemes } from 'storybook-addon-themes';
+
+addDecorator(withThemes);
+```
+
+## Framework Support Table
+
+| | [React](app/react)|[React Native](app/react-native)|[Vue](app/vue)|[Angular](app/angular)| [Polymer](app/polymer)| [Mithril](app/mithril)| [HTML](app/html)| [Marko](app/marko)| [Svelte](app/svelte)| [Riot](app/riot)| [Ember](app/ember)| [Preact](app/preact)|
+| ----------- |:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|
+|Usage without decorator |+| |+|+|+|+|+|+|+|+|+|+|
+|Usage with decorator    |+| | | | | | | | | | | |

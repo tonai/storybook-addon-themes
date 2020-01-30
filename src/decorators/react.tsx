@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import addons from '@storybook/addons';
 
 import { CHANGE, THEME } from '../constants';
-import { useTheme } from '../hooks';
 import { Store } from '../store';
 import { ThemeConfig } from '../models';
 import { getSelectedTheme } from '../shared';
@@ -14,18 +13,30 @@ interface Props {
 
 export const ThemeDecorator: React.FC<Props> = (props) => {
   const { children, config, store } = props;
-  const themeName = useTheme(store) || getSelectedTheme(config.list);
+
+  const [storeTheme, setTheme] = useState<string>(store.get('theme'));
+  const themeName = storeTheme || getSelectedTheme(config.list);
   const theme = config.list.find(theme => theme.name === themeName)
-  const channel = addons.getChannel();
   
-  channel.emit(THEME, themeName);
+  useEffect(() => {
+    return store.subscribe((key: any, value: string) => {
+      if (key === 'theme') {
+        setTheme(value);
+      }
+    });
+  }, []);
 
   useEffect(() => {
-    const callback = (theme: string) => store.set('theme', theme);
+    const updateStore = (theme: string) => store.set('theme', theme);
     const channel = addons.getChannel();
-    channel.on(CHANGE, callback);
-    return () => channel.removeListener(CHANGE, callback);
+    channel.on(CHANGE, updateStore);
+    return () => channel.removeListener(CHANGE, updateStore);
   }, [store]);
+
+  useEffect(() => {
+    const channel = addons.getChannel();
+    channel.emit(THEME, themeName);
+  }, [themeName]);
 
   const themeClasses = theme
       ? theme.class instanceof Array

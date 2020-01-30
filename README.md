@@ -139,13 +139,17 @@ But in this case your theme will not be visible by other addons (like [@storyboo
 
 To fix this you can add the `withThemes` decorator in your stories.
 
+But the decorator method is not available for all frameworks
+
+See [here](#framework-support-table) for the list of supported framework.
+
 ### Globally
 
 Setup the decorator globally in the `preview.js` file:
 
 ```js
 import { addDecorator, addParameters } from '@storybook/react'; // <- or your storybook framework
-import { withThemes } from 'storybook-addon-themes';
+import { withThemes } from 'storybook-addon-themes/react'; // <- or your storybook framework
 
 addParameters({
   themes: [
@@ -195,7 +199,7 @@ And alternatively with the old StoriesOf API:
 
 ```js
 import { storiesOf } from '@storybook/react'; // <- or your storybook framework
-import { withThemes } from 'storybook-addon-themes';
+import { withThemes } from 'storybook-addon-themes/react';
 
 storiesOf('Button', module)
   .addDecorator(withThemes)

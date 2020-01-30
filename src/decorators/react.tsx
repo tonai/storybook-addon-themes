@@ -6,6 +6,8 @@ import { Store } from '../store';
 import { ThemeConfig } from '../models';
 import { getSelectedTheme } from '../shared';
 
+import { getHtmlClasses, getTheme } from './shared';
+
 interface Props {
   config: ThemeConfig;
   store: Store;
@@ -16,7 +18,6 @@ export const ThemeDecorator: React.FC<Props> = (props) => {
 
   const [storeTheme, setTheme] = useState<string>(store.get('theme'));
   const themeName = storeTheme || getSelectedTheme(config.list);
-  const theme = config.list.find(theme => theme.name === themeName)
   
   useEffect(() => {
     return store.subscribe((key: any, value: string) => {
@@ -38,14 +39,8 @@ export const ThemeDecorator: React.FC<Props> = (props) => {
     channel.emit(THEME, themeName);
   }, [themeName]);
 
-  const themeClasses = theme
-      ? theme.class instanceof Array
-        ? theme.class.join(' ')
-        : theme.class
-      : undefined;
-
   return (
-    <div className={themeClasses}>
+    <div className={getHtmlClasses(getTheme(config, themeName))}>
       {children}
     </div>
   );

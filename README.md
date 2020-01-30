@@ -6,7 +6,7 @@ This Storybook Theme Decorator can be used to add a custom HTML class or classes
 
 ## Compatibility
 
-This version is compatible with storybook version `5.x.x`.
+This version is compatible with storybook version `5.3.x`.
 
 ## Installation
 
@@ -16,11 +16,19 @@ npm i -D storybook-addon-themes
 
 ## Getting started
 
-Then, configure it as an addon by adding it to your `addons.js` file (located in the Storybook config directory):
+Then activate the addon by adding it to the storybook `main.js` file (located in the Storybook config directory):
 
 ```js
-import 'storybook-addon-themes/register';
+module.exports = {
+  addons: [
+    // Maybe other addons here...
+    'storybook-addon-themes'
+    // Or here...
+  ],
+};
 ```
+
+See the [storybook documentation](https://storybook.js.org/docs/addons/using-addons/) for more informations.
 
 ## Parameters
 
@@ -41,10 +49,10 @@ The `themes` parameter also accept an object with the following properties :
 
 ### Globally
 
-Configure the themes globally in the storybook `config.js` file:
+You can configure the themes globally in the storybook `preview.js` file:
 
 ```js
-import { addParameters, configure } from '@storybook/react'; // <- or your storybook framework
+import { addParameters } from '@storybook/react'; // <- or your storybook framework
 
 addParameters({
   themes: [
@@ -52,13 +60,11 @@ addParameters({
     { name: 'facebook', class: 'theme-fb', color: '#3b5998' },
   ],
 });
-
-configure(require.context('../src/', true, /\.stories\.js$/), module);
 ```
 
-Note: Addon configuration must be done before the call to `configure`;
+See the [storybook documentation](https://storybook.js.org/docs/addons/using-addons/#global-configuration) for more informations.
 
-### In story (CSF)
+### In story (Component Story Format)
 
 Or configure the themes in your story file like this:
 
@@ -133,13 +139,17 @@ But in this case your theme will not be visible by other addons (like [@storyboo
 
 To fix this you can add the `withThemes` decorator in your stories.
 
+But the decorator method is not available for all frameworks
+
+See [here](#framework-support-table) for the list of supported framework.
+
 ### Globally
 
-Setup the decorator globally in the `config.js` file:
+Setup the decorator globally in the `preview.js` file:
 
 ```js
-import { addDecorator, addParameters, configure } from '@storybook/react'; // <- or your storybook framework
-import { withThemes } from 'storybook-addon-themes';
+import { addDecorator, addParameters } from '@storybook/react'; // <- or your storybook framework
+import { withThemes } from 'storybook-addon-themes/react'; // <- or your storybook framework
 
 addParameters({
   themes: [
@@ -148,11 +158,9 @@ addParameters({
   ],
 });
 addDecorator(withThemes);
-
-configure(require.context('../src/', true, /\.stories\.js$/), module);
 ```
 
-### In story (CSF)
+### In story (Component Story Format)
 
 Or in your story file (for all stories in that file):
 
@@ -191,7 +199,7 @@ And alternatively with the old StoriesOf API:
 
 ```js
 import { storiesOf } from '@storybook/react'; // <- or your storybook framework
-import { withThemes } from 'storybook-addon-themes';
+import { withThemes } from 'storybook-addon-themes/react';
 
 storiesOf('Button', module)
   .addDecorator(withThemes)
@@ -203,4 +211,4 @@ storiesOf('Button', module)
 | | [React](app/react)|[React Native](app/react-native)|[Vue](app/vue)|[Angular](app/angular)| [Polymer](app/polymer)| [Mithril](app/mithril)| [HTML](app/html)| [Marko](app/marko)| [Svelte](app/svelte)| [Riot](app/riot)| [Ember](app/ember)| [Preact](app/preact)|
 | ----------- |:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|
 |Usage without decorator |+| |+|+|+|+|+|+|+|+|+|+|
-|Usage with decorator    |+| | | | | | | | | | | |
+|Usage with decorator    |+| |+| | | | | | | | | |

@@ -6,9 +6,11 @@ import { SET_STORIES } from '@storybook/core-events';
 import { Icons, IconButton, WithTooltip, TooltipLinkList } from '@storybook/components';
 
 import { CHANGE, DECORATOR, THEME } from '../constants';
-import { ColorIcon, ThemeStory } from '../components';
 import { Api, Theme, ThemeSelectorItem } from '../models';
 import { getConfigFromApi, getSelectedTheme } from '../shared';
+
+import { ColorIcon } from './ColorIcon';
+import { ThemeStory } from './ThemeStory';
 
 const iframeId = 'storybook-preview-iframe';
 

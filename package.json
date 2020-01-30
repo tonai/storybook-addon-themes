@@ -1,12 +1,13 @@
 {
   "name": "storybook-addon-themes",
-  "version": "5.2.0",
+  "version": "5.3.0",
   "description": "A storybook addon to switch between different themes for your preview",
   "keywords": [
     "addon",
     "theme",
     "react",
-    "storybook"
+    "storybook",
+    "vue"
   ],
   "homepage": "https://github.com/tonai/storybook-addon-themes",
   "bugs": {
@@ -18,13 +19,12 @@
   },
   "license": "MIT",
   "author": "tonai",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/react.js",
+  "types": "dist/react.d.ts",
   "scripts": {
     "prepare": "node ./scripts/prepare.js"
   },
   "dependencies": {
-    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
     "@storybook/addons": "^5.1.0-rc.5",
     "@storybook/client-logger": "^5.1.0-rc.5",
     "@storybook/components": "^5.1.0-rc.5",
@@ -33,7 +33,6 @@
     "core-js": "^2.6.5",
     "global": "^4.3.2",
     "memoizerific": "^1.11.3",
-    "react": "^16.8.4",
     "util-deprecate": "^1.0.2"
   },
   "devDependencies": {
@@ -41,11 +40,13 @@
     "@babel/core": "^7.2.4",
     "@babel/plugin-proposal-class-properties": "^7.3.3",
     "@babel/plugin-proposal-export-default-from": "^7.2.0",
+    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
     "@babel/preset-env": "^7.3.4",
     "@babel/preset-flow": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
     "@types/react": "^16.8.4",
     "@types/util-deprecate": "^1.0.0",
+    "@types/vue": "^2.0.0",
     "@types/webpack-env": "^1.13.7",
     "babel-plugin-dynamic-import-node": "^2.2.0",
     "babel-plugin-emotion": "^10.0.7",
@@ -55,6 +56,10 @@
     "npmlog": "^4.1.2",
     "shelljs": "^0.8.3",
     "typescript": "^3.3.3333"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "vue": "*"
   },
   "publishConfig": {
     "access": "public"

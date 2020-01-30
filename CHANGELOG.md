@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.3.0] - 2020-01-30
+### Added
+- Security update
+- Add vue support for decorator. ([@tonai](https://github.com/tonai) in [#8](https://github.com/tonai/storybook-addon-themes/pull/16))
+
 ## [5.2.0] - 2019-07-09
 ### Added
 - Add CHANGELOG file.

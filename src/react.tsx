@@ -4,12 +4,9 @@ import addons, { makeDecorator, StoryContext, StoryGetter, WrapperSettings } fro
 import { DECORATOR } from './constants';
 import { Theme, ThemeConfig } from './models';
 import parameters from './parameters';
-import { Store } from './store';
 import { getConfig } from './shared';
 
 import { ThemeDecorator } from './decorators/react';
-
-export const store = new Store();
 
 function wrapper(getStory: StoryGetter, context: StoryContext, { parameters }: WrapperSettings) {
   const config = getConfig(parameters as ThemeConfig | Theme[]);
@@ -17,7 +14,7 @@ function wrapper(getStory: StoryGetter, context: StoryContext, { parameters }: W
   channel.emit(DECORATOR);
   
   return (
-    <ThemeDecorator config={config} store={store}>
+    <ThemeDecorator config={config}>
       {getStory(context)}
     </ThemeDecorator>
   );

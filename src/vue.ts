@@ -3,12 +3,10 @@ import addons, { makeDecorator, StoryContext, StoryGetter, WrapperSettings } fro
 import { DECORATOR } from './constants';
 import { Theme, ThemeConfig } from './models';
 import parameters from './parameters';
-import { Store } from './store';
 import { getConfig } from './shared';
 
 import { ThemeDecorator } from './decorators/vue';
 
-export const store = new Store();
 
 function wrapper(getStory: StoryGetter, context: StoryContext, { parameters }: WrapperSettings) {
   const config = getConfig(parameters as ThemeConfig | Theme[]);
@@ -18,11 +16,11 @@ function wrapper(getStory: StoryGetter, context: StoryContext, { parameters }: W
   return {
     components: { ThemeDecorator },
     template: `
-<theme-decorator :config="config" :store="store">
+<theme-decorator :config="config">
   <story/>
 </theme-decorator>`,
     data() {
-      return { config, store };
+      return { config };
     },
   }
 }

@@ -5,47 +5,35 @@ import { getSelectedTheme } from '../shared';
 
 import { getHtmlClasses, getTheme } from './shared';
 
+const channel = addons.getChannel();
+
 export const ThemeDecorator = {
   beforeDestroy() {
-    const channel = addons.getChannel();
-    channel.removeListener(CHANGE, this.updateStore);
-    this.unsubscribe();
+    channel.removeListener(CHANGE, this.setTheme);
   },
   computed: {
     themeClasses(): string {
-      return getHtmlClasses(getTheme(this.config, this.themeName));
+      return getHtmlClasses(getTheme(this.config, this.theme));
     },
-    themeName(): string {
-      return this.storeTheme || getSelectedTheme(this.config.list);
-    }
   },
   data() {
+    const lastValue = channel.last(CHANGE);
     return {
-      storeTheme: this.store.get('theme')
+      theme: (lastValue && lastValue[0]) || getSelectedTheme(this.config.list)
     };
   },
   methods: {
-    updateStore(theme: string) {
-      this.store.set('theme', theme);
+    setTheme(theme: string) {
+      this.theme = theme;
     }
   },
   mounted() {
-    this.unsubscribe = this.store.subscribe((key: any, value: string) => {
-      if (key === 'theme') {
-        this.storeTheme = value;
-      }
-    });
-
     const channel = addons.getChannel();
-    channel.on(CHANGE, this.updateStore);
+    channel.on(CHANGE, this.setTheme);
   },
-  props: [ 'config', 'store' ],
+  props: [ 'config' ],
   template: `
 <div :class="themeClasses">
   <slot></slot>
-</div>`,
-  updated() {
-    const channel = addons.getChannel();
-    channel.emit(THEME, this.themeName);
-  }
+</div>`
 };

@@ -15,6 +15,7 @@ interface Props {
 
 export const ThemeDecorator: React.FC<Props> = (props) => {
   const { children, config, store } = props;
+  const channel = addons.getChannel();
 
   const [storeTheme, setTheme] = useState<string>(store.get('theme'));
   const themeName = storeTheme || getSelectedTheme(config.list);
@@ -29,13 +30,11 @@ export const ThemeDecorator: React.FC<Props> = (props) => {
 
   useEffect(() => {
     const updateStore = (theme: string) => store.set('theme', theme);
-    const channel = addons.getChannel();
     channel.on(CHANGE, updateStore);
     return () => channel.removeListener(CHANGE, updateStore);
   }, [store]);
 
   useEffect(() => {
-    const channel = addons.getChannel();
     channel.emit(THEME, themeName);
   }, [themeName]);
 

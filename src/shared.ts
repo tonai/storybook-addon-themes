@@ -1,11 +1,13 @@
+import { API } from '@storybook/api';
+
 import { PARAM_KEY } from './constants';
-import { Api, Theme, ThemeConfig } from './models';
+import { Theme, ThemeConfig } from './models';
 
 const defaultOptions: ThemeConfig = {
   list: []
 };
 
-export function getConfigFromApi(api: Api): ThemeConfig {
+export function getConfigFromApi(api: API): ThemeConfig {
   const data = api.getCurrentStoryData() as any as { parameters: { [parameterName: string]: any } };
   return getConfig(data && data.parameters && data.parameters[PARAM_KEY]);
 }

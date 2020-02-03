@@ -1,12 +1,13 @@
 import React, { Component, Fragment } from 'react';
 import memoize from 'memoizerific';
 
+import { API } from '@storybook/api';
 import { SET_STORIES } from '@storybook/core-events';
 
 import { Icons, IconButton, WithTooltip, TooltipLinkList } from '@storybook/components';
 
 import { CHANGE, DECORATOR, THEME } from '../constants';
-import { Api, Theme, ThemeSelectorItem } from '../models';
+import { Theme, ThemeSelectorItem } from '../models';
 import { getConfigFromApi, getSelectedTheme } from '../shared';
 
 import { ColorIcon } from './ColorIcon';
@@ -67,7 +68,7 @@ const getDisplayableState = memoize(10)(
 );
 
 interface ThemeToolProps {
-  api: Api;
+  api: API;
 }
 
 interface ThemeToolState {

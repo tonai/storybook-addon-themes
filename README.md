@@ -4,6 +4,8 @@ Greatly inspired by [@storybook/addon-backgrounds](https://github.com/storybooks
 
 This Storybook Theme Decorator can be used to add a custom HTML class or classes to the the preview in [Storybook](https://storybook.js.org).
 
+![Demo](media/demo.gif)
+
 ## Compatibility
 
 This version is compatible with storybook version `5.3.x`.

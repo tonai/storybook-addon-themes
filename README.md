@@ -8,7 +8,7 @@ This Storybook Theme Decorator can be used to add a custom HTML class or classes
 
 ## Compatibility
 
-This version is compatible with storybook version `5.3.x`.
+This version is compatible with storybook version `6.0.x`.
 
 ## Installation
 

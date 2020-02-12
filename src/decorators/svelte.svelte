@@ -1,5 +1,5 @@
 <script>
-  import { onDestroy } from 'svelte';
+  import { onDestroy, onMount } from 'svelte';
   import addons from '@storybook/addons';
 
   import { CHANGE, THEME } from '../constants';
@@ -11,7 +11,6 @@
 
   const channel = addons.getChannel();
   const lastValue = channel.last(CHANGE);
-  channel.on(CHANGE, setTheme);
 
   let theme = (lastValue && lastValue[0]) || getSelectedTheme(config.list);
 
@@ -19,9 +18,8 @@
     theme = themeName;
   }
 
-  onDestroy(() => {
-    channel.removeListener(CHANGE, setTheme);
-  });
+  onMount(() => channel.on(CHANGE, setTheme));
+  onDestroy(() => channel.removeListener(CHANGE, setTheme));
 </script>
 
 <div class={getHtmlClasses(getTheme(config, theme))}>

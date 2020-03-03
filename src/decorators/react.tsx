@@ -29,9 +29,7 @@ export const ThemeDecorator: React.FC<Props> = (props) => {
   }, []);
 
   useEffect(() => {
-    const updateStore = (theme: string) => {
-      store.set('theme', theme);
-    }
+    const updateStore = (theme: string) => store.set('theme', theme);
 
     channel.on(CHANGE, updateStore);
     return () => channel.removeListener(CHANGE, updateStore);

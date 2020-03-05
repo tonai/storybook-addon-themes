@@ -1,9 +1,10 @@
 import addons from '@storybook/addons';
 
 import { CHANGE, THEME } from '../constants';
-import { getSelectedTheme } from '../shared';
+import { Theme } from '../models';
+import { getSelectedTheme, getSelectedThemeName } from '../shared';
 
-import { getHtmlClasses, getTheme } from './shared';
+import { getHtmlClasses } from './shared';
 
 export const ThemeDecorator = {
   beforeDestroy() {
@@ -12,11 +13,14 @@ export const ThemeDecorator = {
     this.unsubscribe();
   },
   computed: {
+    theme(): Theme {
+      return getSelectedTheme(this.config.list, this.themeName);
+    },
     themeClasses(): string {
-      return getHtmlClasses(getTheme(this.config, this.themeName));
+      return getHtmlClasses(this.theme);
     },
     themeName(): string {
-      return this.storeTheme || getSelectedTheme(this.config.list);
+      return this.storeTheme || getSelectedThemeName(this.config.list);
     }
   },
   data() {
@@ -41,7 +45,17 @@ export const ThemeDecorator = {
   },
   props: [ 'config', 'store' ],
   template: `
-<div :class="themeClasses">
+<component
+  v-if="this.config.Decorator"
+  :is="this.config.Decorator"
+  :theme="theme"
+  :themes="this.config.list"
+  :themeClasses="themeClasses"
+  :themeName="themeName"
+>
+  <slot></slot>
+</component>
+<div v-else :class="themeClasses">
   <slot></slot>
 </div>`,
   updated() {

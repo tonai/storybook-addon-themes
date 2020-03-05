@@ -4,9 +4,9 @@ import addons from '@storybook/addons';
 import { CHANGE, THEME } from '../constants';
 import { Store } from '../store';
 import { ThemeConfig } from '../models';
-import { getSelectedTheme } from '../shared';
+import { getSelectedTheme, getSelectedThemeName } from '../shared';
 
-import { getHtmlClasses, getTheme } from './shared';
+import { getHtmlClasses } from './shared';
 
 interface Props {
   config: ThemeConfig;
@@ -15,10 +15,13 @@ interface Props {
 
 export const ThemeDecorator: React.FC<Props> = (props) => {
   const { children, config, store } = props;
+  const { Decorator, list } = config;
   const channel = addons.getChannel();
 
   const [storeTheme, setTheme] = useState<string>(store.get('theme'));
-  const themeName = storeTheme || getSelectedTheme(config.list);
+  const themeName = storeTheme || getSelectedThemeName(list);
+  const theme = getSelectedTheme(list, themeName);
+  const themeClasses = getHtmlClasses(theme);
   
   useEffect(() => {
     return store.subscribe((key: any, value: string) => {
@@ -38,8 +41,16 @@ export const ThemeDecorator: React.FC<Props> = (props) => {
     channel.emit(THEME, themeName);
   }, [themeName]);
 
+  if (Decorator) {
+    return (
+      <Decorator theme={theme} themes={list} themeClasses={themeClasses} themeName={themeName}>
+        {children}
+      </Decorator>
+    );
+  }
+
   return (
-    <div className={getHtmlClasses(getTheme(config, themeName))}>
+    <div className={themeClasses}>
       {children}
     </div>
   );

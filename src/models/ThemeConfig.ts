@@ -1,5 +1,7 @@
-import { Theme } from "./Theme";
+import { Decorator } from './Decorator';
+import { Theme } from './Theme';
 
 export interface ThemeConfig {
+  Decorator?: Decorator,
   list: Theme[]
 }

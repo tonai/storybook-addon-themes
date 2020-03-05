@@ -37,8 +37,9 @@ See the [storybook documentation](https://storybook.js.org/docs/addons/using-add
 The `themes` parameter accept a list of `Theme` object.
 
 Each `Theme` is an object with the following properties :
+
 * `name` (`string`): Name of the theme
-* `class` (`string | string[]`): HTML class(es) associated with the theme
+* `class` (`string | string[]` - optionnal): HTML class(es) associated with the theme
 * `color` (`string`): The color of the badge in the theme selector
 * `default` (`boolean` - optionnal): Is the theme selected by default ?
 
@@ -46,6 +47,7 @@ The `themes` parameter also accept an object with the following properties :
 
 * `list` (`Theme[]` - optionnal): The list of themes
 * `disable` (`boolean` - optionnal): Disable the addon for a story
+* `Decorator` (`Component` - optionnal): A component to use as the decorator component ([see below](#custom-decorator) for more informations)
 
 ## Configuration
 
@@ -72,14 +74,14 @@ Or configure the themes in your story file like this:
 
 ```js
 export default {
+  title: 'CSF|Button',
   component: Button,
   parameters: {
     themes: [
-      { name: 'twitter', class: ['theme-twt', 'light-mode'], color: '#00aced' },
+      { name: 'twitter', class: ['theme-twt', 'light-mode'], color: '#00aced', default: true },
       { name: 'facebook', class: ['theme-fb', 'dark-mode'], color: '#3b5998' },
-    ]
+    ],
   },
-  title: 'CSF|Button',
 };
 ```
 
@@ -87,17 +89,17 @@ If you only want to activate the addon or override the themes for a specific sto
 
 ```js
 export default {
+  title: 'CSF|Button',
   component: Button,
-  title: 'Button',
 };
 
 export const withText = () => <Button onClick={action('clicked')}>Hello Button</Button>;
 withText.story = {
   parameters: {
     themes: [
-      { name: 'twitter', class: ['theme-twt', 'light-mode'], color: '#00aced' },
+      { name: 'twitter', class: ['theme-twt', 'light-mode'], color: '#00aced', default: true },
       { name: 'facebook', class: ['theme-fb', 'dark-mode'], color: '#3b5998' },
-    ]
+    ],
   },
 };
 ```
@@ -109,7 +111,7 @@ Alternatively with the old StoriesOf API:
 ```js
 import { storiesOf } from '@storybook/react'; // <- or your storybook framework
 
-storiesOf('Button', module)
+storiesOf('StoriesOf|Button', module)
   .addParameters({
     themes: [
       { name: 'twitter', class: 'theme-twt', color: '#00aced', default: true },
@@ -124,11 +126,11 @@ And for a single story:
 ```js
 import { storiesOf } from '@storybook/react';
 
-storiesOf('Button', module)
+storiesOf('StoriesOf|Button', module)
   .add('with text', () => <button>Click me</button>, {
-    themes: [{
-      name: 'red', class: 'theme-red', color: 'rgba(255, 0, 0)',
-    }]
+    themes: [
+      { name: 'red', class: 'theme-red', color: 'rgba(255, 0, 0)' },
+    ],
   });
 
 ```
@@ -168,15 +170,15 @@ Or in your story file (for all stories in that file):
 
 ```js
 export default {
+  title: 'CSF|Button',
   component: Button,
   decorators: [ withThemes ],
   parameters: {
     themes: [
-      { name: 'twitter', class: ['theme-twt', 'light-mode'], color: '#00aced' },
+      { name: 'twitter', class: ['theme-twt', 'light-mode'], color: '#00aced', default: true },
       { name: 'facebook', class: ['theme-fb', 'dark-mode'], color: '#3b5998' },
-    ]
+    ],
   },
-  title: 'CSF|Button',
 };
 ```
 
@@ -188,9 +190,9 @@ withText.story = {
   decorators: [ withThemes ],
   parameters: {
     themes: [
-      { name: 'twitter', class: ['theme-twt', 'light-mode'], color: '#00aced' },
+      { name: 'twitter', class: ['theme-twt', 'light-mode'], color: '#00aced', default: true },
       { name: 'facebook', class: ['theme-fb', 'dark-mode'], color: '#3b5998' },
-    ]
+    ],
   },
 };
 ```
@@ -203,9 +205,54 @@ And alternatively with the old StoriesOf API:
 import { storiesOf } from '@storybook/react'; // <- or your storybook framework
 import { withThemes } from 'storybook-addon-themes/react';
 
-storiesOf('Button', module)
+storiesOf('StoriesOf|Button', module)
   .addDecorator(withThemes)
   .add('with text', () => <button>Click me</button>);
+```
+
+### Custom decorator
+
+You can provide a component that will be used as decorator using the `Decorator` option in the `theme` parameter.
+
+The decorator will get the following properties :
+
+* `theme`: The selected theme or `undefined` if none is selected.
+* `themes`: The list of themes as provided in the `list` option of the `theme` parameter.
+* `themeClasses`: The formatted theme classes of the selected theme (if the `class` option exists on the selected theme).
+* `themeName`: The name of the selected theme (equal to `none` if none is selected).
+
+Don't forget to render the story using the `children` prop (for React) or the `<slot></slot>` element (for Vue.js).
+
+Example of a customized decorator that use a CSS file for changing the theme:
+
+```js
+import { withThemes } from 'storybook-addon-themes/react';
+
+function Decorator(props) {
+  const { children, themeName } = props;
+  return (
+    <>
+      {children}
+      {themeName === 'twitter' && <link rel="stylesheet" href="twitter.css"/>}
+      {themeName === 'facebook' && <link rel="stylesheet" href="facebook.css"/>}
+    </>
+  );
+};
+
+export default {
+  title: 'CSF|Button',
+  component: Button,
+  decorators: [ withThemes ],
+  parameters: {
+    themes: {
+      Decorator,
+      list: [
+        { name: 'twitter', color: '#00aced', default: true },
+        { name: 'facebook', color: '#3b5998' },
+      ],
+    },
+  },
+};
 ```
 
 ## Framework Support Table

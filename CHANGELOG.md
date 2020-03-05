@@ -6,10 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.4.0] - 2020-03-05
+### Added
+- Add option for customizing the decorator. ([@tonai](https://github.com/tonai) in [#23](https://github.com/tonai/storybook-addon-themes/pull/23))
+
 ## [5.3.0] - 2020-01-30
 ### Added
 - Security update
-- Add vue support for decorator. ([@tonai](https://github.com/tonai) in [#8](https://github.com/tonai/storybook-addon-themes/pull/16))
+- Add vue support for decorator. ([@tonai](https://github.com/tonai) in [#16](https://github.com/tonai/storybook-addon-themes/pull/16))
 
 ## [5.2.0] - 2019-07-09
 ### Added
@@ -19,7 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [5.1.0] - 2019-06-04
 ### Added
 - Active theme styles. ([@Yankovsky](https://github.com/Yankovsky) in [#3](https://github.com/tonai/storybook-addon-themes/pull/3))
-- Multiple classes theme. ([@Yankovsky](https://github.com/Yankovsky) in [#3](https://github.com/tonai/storybook-addon-themes/pull/4))
+- Multiple classes theme. ([@Yankovsky](https://github.com/Yankovsky) in [#4](https://github.com/tonai/storybook-addon-themes/pull/4))
 
 ## [5.0.0] - 2019-03-15
 ### Added

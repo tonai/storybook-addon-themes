@@ -23,7 +23,7 @@ export const ThemeStory: React.FC<Props> = (props) => {
     const { body } = iframeDocument;
 
     // Add selected theme class(es).
-    if (selectedTheme) {
+    if (selectedTheme && selectedTheme.class) {
       if (typeof selectedTheme.class === 'string') {
         body.classList.add(selectedTheme.class)
       } else { // string[]

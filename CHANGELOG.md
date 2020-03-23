@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.0.0-alpha2] - 2020-03-23
+### Added
+- Add option for customizing the decorator. ([@tonai](https://github.com/tonai) in [#23](https://github.com/tonai/storybook-addon-themes/pull/23))
+- Support custom decorator for svelte.
+- Fix error when a theme without the class property is selected.
+
 ## [5.4.1] - 2020-03-23
 ### Added
 - Security update.

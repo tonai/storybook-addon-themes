@@ -1,5 +1,5 @@
 export interface Theme {
-  class: string | string[],
+  class?: string | string[],
   color: string;
   name: string;
   default?: boolean;

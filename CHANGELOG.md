@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.4.0] - 2020-03-05
+### Added
+- Add option for customizing the decorator. ([@tonai](https://github.com/tonai) in [#23](https://github.com/tonai/storybook-addon-themes/pull/23))
+
 ## [6.0.0-alpha1] - 2020-02-13
 ### Added
 - Add demo gif in README. ([@tonai](https://github.com/tonai) in [#19](https://github.com/tonai/storybook-addon-themes/pull/19))
@@ -24,7 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [5.1.0] - 2019-06-04
 ### Added
 - Active theme styles. ([@Yankovsky](https://github.com/Yankovsky) in [#3](https://github.com/tonai/storybook-addon-themes/pull/3))
-- Multiple classes theme. ([@Yankovsky](https://github.com/Yankovsky) in [#3](https://github.com/tonai/storybook-addon-themes/pull/4))
+- Multiple classes theme. ([@Yankovsky](https://github.com/Yankovsky) in [#4](https://github.com/tonai/storybook-addon-themes/pull/4))
 
 ## [5.0.0] - 2019-03-15
 ### Added

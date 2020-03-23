@@ -22,7 +22,7 @@ export function getConfig(parameters: ThemeConfig | Theme[]): ThemeConfig {
   };
 }
 
-export function getSelectedTheme(list: Theme[], currentSelectedValue?: string): string {
+export function getSelectedThemeName(list: Theme[], currentSelectedValue?: string): string {
   if (!list.length) {
     return 'none';
   }
@@ -41,3 +41,7 @@ export function getSelectedTheme(list: Theme[], currentSelectedValue?: string): 
 
   return 'none';
 };
+
+export function getSelectedTheme(list: Theme[], themeName: string): Theme {
+  return list.find(({ name }) => name === themeName);
+}

@@ -8,7 +8,7 @@ import { Icons, IconButton, WithTooltip, TooltipLinkList } from '@storybook/comp
 
 import { CHANGE, DECORATOR, THEME } from '../constants';
 import { Theme, ThemeSelectorItem } from '../models';
-import { getConfigFromApi, getSelectedTheme } from '../shared';
+import { getConfigFromApi, getSelectedTheme, getSelectedThemeName } from '../shared';
 
 import { ColorIcon } from './ColorIcon';
 import { ThemeStory } from './ThemeStory';
@@ -38,7 +38,7 @@ const createThemeSelectorItem = memoize(1000)(
 const getDisplayableState = memoize(10)(
   (props: ThemeToolProps, state: ThemeToolState, change) => {
     const { list } = getConfigFromApi(props.api);
-    const selectedThemeName = getSelectedTheme(list, state.selected);
+    const selectedThemeName = getSelectedThemeName(list, state.selected);
 
     let availableThemeSelectorItems: ThemeSelectorItem[] = [];
     let selectedTheme: Theme;
@@ -56,7 +56,7 @@ const getDisplayableState = memoize(10)(
           createThemeSelectorItem(name, name, color, true, change, name === selectedThemeName)
         ),
       ];
-      selectedTheme = list.find(theme => theme.name === selectedThemeName);
+      selectedTheme = getSelectedTheme(list, selectedThemeName);
     }
 
     return {

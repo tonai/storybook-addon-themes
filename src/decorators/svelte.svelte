@@ -11,9 +11,11 @@
 
   const channel = addons.getChannel();
   const lastValue = channel.last(CHANGE);
-  const { list } = config;
+  const { Decorator, list } = config;
 
   let themeName = (lastValue && lastValue[0]) || getSelectedThemeName(list);
+  $: theme = getSelectedTheme(list, themeName);
+  $: themeClasses = getHtmlClasses(theme);
 
   function setThemeName(theme) {
     themeName = theme;
@@ -23,6 +25,12 @@
   onDestroy(() => channel.removeListener(CHANGE, setThemeName));
 </script>
 
-<div class={getHtmlClasses(getSelectedTheme(list, themeName))}>
-  <slot></slot>
-</div>
+{#if Decorator}
+  <svelte:component this={Decorator} theme={theme} themes={list} themeClasses={themeClasses} themeName={themeName}>
+    <slot></slot>
+  </svelte:component>
+{:else}
+  <div class={themeClasses}>
+    <slot></slot>
+  </div>
+{/if}

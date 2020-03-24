@@ -2,7 +2,7 @@
   import { onDestroy, onMount } from 'svelte';
   import addons from '@storybook/addons';
 
-  import { CHANGE, THEME } from '../constants';
+  import { CHANGE } from '../constants';
   import { getSelectedTheme, getSelectedThemeName } from '../shared';
 
   import { getHtmlClasses } from './shared';

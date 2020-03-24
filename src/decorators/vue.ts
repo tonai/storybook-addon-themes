@@ -1,6 +1,6 @@
 import addons from '@storybook/addons';
 
-import { CHANGE, THEME } from '../constants';
+import { CHANGE } from '../constants';
 import { Theme } from '../models';
 import { getSelectedTheme, getSelectedThemeName } from '../shared';
 

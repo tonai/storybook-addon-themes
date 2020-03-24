@@ -5,5 +5,5 @@ export function getHtmlClasses(theme: Theme) {
     ? theme.class instanceof Array
       ? theme.class.join(' ')
       : theme.class
-    : undefined;
+    : '';
 }

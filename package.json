@@ -4,6 +4,7 @@
   "description": "A storybook addon to switch between different themes for your preview",
   "keywords": [
     "addon",
+    "angular",
     "frontend",
     "react",
     "reactjs",
@@ -33,6 +34,7 @@
     "prepare": "node ./scripts/prepare.js"
   },
   "dependencies": {
+    "@angular/core": "^9.0.7",
     "@storybook/addons": "next",
     "@storybook/api": "next",
     "@storybook/components": "next",
@@ -40,7 +42,8 @@
     "@storybook/theming": "next",
     "core-js": "^3.6.4",
     "global": "^4.4.0",
-    "memoizerific": "^1.11.3"
+    "memoizerific": "^1.11.3",
+    "rxjs": "^6.5.4"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.3",
@@ -71,7 +74,9 @@
     "typescript": "^3.7.5"
   },
   "peerDependencies": {
+    "@angular/core": "*",
     "react": "*",
+    "rxjs": "*",
     "svelte": "*",
     "vue": "*"
   },

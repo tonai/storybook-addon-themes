@@ -36,7 +36,7 @@ const createThemeSelectorItem = memoize(1000)(
 
 const getDisplayableState = memoize(10)(
   (props: ThemeToolProps, state: ThemeToolState, change) => {
-    const { list } = getConfigFromApi(props.api);
+    const { list, attribute } = getConfigFromApi(props.api);
     const selectedThemeName = getSelectedThemeName(list, state.selected);
 
     let availableThemeSelectorItems: ThemeSelectorItem[] = [];
@@ -62,6 +62,7 @@ const getDisplayableState = memoize(10)(
       items: availableThemeSelectorItems,
       selectedTheme,
       themes: list,
+      attribute
     };
   }
 );
@@ -84,7 +85,7 @@ export class ThemeSelector extends Component<ThemeToolProps, ThemeToolState> {
     selected: null,
     expanded: false,
   };
-  
+
   private setStories = () => this.setState({ selected: null });
 
   private setTheme = (theme: string) => this.setState({ selected: theme });
@@ -109,7 +110,7 @@ export class ThemeSelector extends Component<ThemeToolProps, ThemeToolState> {
     const { selected } = args;
     const { api } = this.props;
     const { decorator } = this.state;
-    
+
     this.setState(args);
     if (decorator) {
       api.emit(CHANGE, selected);
@@ -118,7 +119,7 @@ export class ThemeSelector extends Component<ThemeToolProps, ThemeToolState> {
 
   render() {
     const { decorator, expanded } = this.state;
-    const { items, selectedTheme, themes } = getDisplayableState(
+    const { items, selectedTheme, themes, attribute } = getDisplayableState(
       this.props,
       this.state,
       this.change
@@ -127,7 +128,7 @@ export class ThemeSelector extends Component<ThemeToolProps, ThemeToolState> {
     return items.length ? (
       <Fragment>
         {!decorator && (
-          <ThemeStory iframeId={iframeId} selectedTheme={selectedTheme} themes={themes} />
+          <ThemeStory iframeId={iframeId} selectedTheme={selectedTheme} themes={themes} attribute={attribute} />
         )}
         <WithTooltip
           placement="top"

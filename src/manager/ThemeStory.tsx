@@ -8,10 +8,11 @@ interface Props {
   iframeId: string;
   selectedTheme: Theme;
   themes: Theme[];
+  attribute: string;
 }
 
 export const ThemeStory: React.FC<Props> = (props) => {
-  const { iframeId, selectedTheme, themes } = props;
+  const { iframeId, selectedTheme, themes, attribute } = props;
 
   useEffect(() => {
     const iframe = document.getElementById(iframeId);
@@ -24,20 +25,31 @@ export const ThemeStory: React.FC<Props> = (props) => {
 
     // Add selected theme class(es).
     if (selectedTheme && selectedTheme.class) {
-      if (typeof selectedTheme.class === 'string') {
-        body.classList.add(selectedTheme.class)
-      } else { // string[]
-        body.classList.add(...selectedTheme.class)
+      if (!attribute || attribute === 'class') {
+        if (typeof selectedTheme.class === 'string') {
+          body.classList.add(selectedTheme.class)
+        } else { // string[]
+          body.classList.add(...selectedTheme.class)
+        }
+      } else {
+        const value = typeof selectedTheme.class === 'string' ? selectedTheme.class : selectedTheme.class.join(' ');
+        body.setAttribute(attribute, value)
       }
+    }
+
+    if (!selectedTheme && attribute !== 'class') {
+      body.removeAttribute(attribute);
     }
 
     return () => themes
       .filter(theme => theme.class)
       .forEach(theme => {
-        if (typeof theme.class === 'string') {
-          body.classList.remove(theme.class)
-        } else { // string[]
-          body.classList.remove(...theme.class)
+        if (!attribute || attribute === 'class') {
+          if (typeof theme.class === 'string') {
+            body.classList.remove(theme.class)
+          } else { // string[]
+            body.classList.remove(...theme.class)
+          }
         }
       });
   });

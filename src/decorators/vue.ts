@@ -16,12 +16,26 @@ export const ThemeDecorator = {
     theme(): Theme {
       return getSelectedTheme(this.config.list, this.themeName);
     },
+    attribute(): string {
+      if (this.config.attribute !== 'class') {
+        return this.config.attribute;
+      }
+
+      return '';
+    },
     themeClasses(): string {
       return getHtmlClasses(this.theme);
     },
+    themeValue(): string {
+      if (this.config.attribute !== 'class') {
+        return this.theme.value;
+      }
+
+      return '';
+    },
     themeName(): string {
       return this.storeTheme || getSelectedThemeName(this.config.list);
-    }
+    },
   },
   data() {
     return {
@@ -48,14 +62,16 @@ export const ThemeDecorator = {
 <component
   v-if="this.config.Decorator"
   :is="this.config.Decorator"
+  :attribute="this.config.attribute"
   :theme="theme"
   :themes="this.config.list"
   :themeClasses="themeClasses"
   :themeName="themeName"
+  :themeValue="themeValue"
 >
   <slot></slot>
 </component>
-<div v-else :class="themeClasses">
+<div v-else :[attribute]="themeValue" :class="themeClasses">
   <slot></slot>
 </div>`,
   updated() {

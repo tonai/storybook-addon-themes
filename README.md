@@ -219,6 +219,7 @@ The decorator will get the following properties :
 * `theme`: The selected theme or `undefined` if none is selected.
 * `themes`: The list of themes as provided in the `list` option of the `theme` parameter.
 * `themeClasses`: The formatted theme classes of the selected theme (if the `class` option exists on the selected theme).
+* `themeValue`: The theme value of the selected theme (if the `attribute` option is not a `class`).
 * `themeName`: The name of the selected theme (equal to `none` if none is selected).
 
 Don't forget to render the story using the `children` prop (for React) or the `<slot></slot>` element (for Vue.js).

@@ -2,7 +2,8 @@ import { PARAM_KEY } from './constants';
 import { Api, Theme, ThemeConfig } from './models';
 
 const defaultOptions: ThemeConfig = {
-  list: []
+  list: [],
+  attribute: 'class' 
 };
 
 export function getConfigFromApi(api: Api): ThemeConfig {

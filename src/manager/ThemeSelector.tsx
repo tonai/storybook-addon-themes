@@ -73,7 +73,6 @@ interface ThemeToolProps {
 
 interface ThemeToolState {
   decorator: boolean,
-  items: ThemeSelectorItem[];
   selected: string;
   expanded: boolean;
 }
@@ -81,7 +80,6 @@ interface ThemeToolState {
 export class ThemeSelector extends Component<ThemeToolProps, ThemeToolState> {
   state: ThemeToolState = {
     decorator: false,
-    items: [],
     selected: null,
     expanded: false,
   };
@@ -109,9 +107,13 @@ export class ThemeSelector extends Component<ThemeToolProps, ThemeToolState> {
   change = (args: { selected: string; expanded: boolean }) => {
     const { selected } = args;
     const { api } = this.props;
-    const { decorator } = this.state;
+    const { list, onChange } = getConfigFromApi(api);
     this.setState(args);
     api.emit(CHANGE, selected);
+    if (typeof onChange === 'function') {
+      const selectedTheme = getSelectedTheme(list, selected);
+      onChange(selectedTheme);
+    }
   };
 
   render() {

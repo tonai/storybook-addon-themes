@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.5.0] - 2020-08-24
+### Added
+- Show theme selector in doc tabs. ([@jpzwarte](https://github.com/jpzwarte) in [#29](https://github.com/tonai/storybook-addon-themes/pull/29))
+- Security update.  ([@tonai](https://github.com/tonai) in [#31](https://github.com/tonai/storybook-addon-themes/pull/31) and [#35](https://github.com/tonai/storybook-addon-themes/pull/35))
+- Launch change event even if no decorator is set. ([@tonai](https://github.com/tonai) in [#32](https://github.com/tonai/storybook-addon-themes/pull/32))
+- Add onChange parameter. ([@tonai](https://github.com/tonai) in [#33](https://github.com/tonai/storybook-addon-themes/pull/33))
+- Add clearable parameter. ([@tonai](https://github.com/tonai) in [#34](https://github.com/tonai/storybook-addon-themes/pull/34))
+
 ## [6.0.0-alpha2] - 2020-03-23
 ### Added
 - Add option for customizing the decorator. ([@tonai](https://github.com/tonai) in [#23](https://github.com/tonai/storybook-addon-themes/pull/23))

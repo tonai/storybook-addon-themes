@@ -34,7 +34,7 @@ See the [storybook documentation](https://storybook.js.org/docs/addons/using-add
 
 ## Parameters
 
-The `themes` parameter accept a list of `Theme` object.
+The `themes` parameter accept an array of `Theme` object.
 
 Each `Theme` is an object with the following properties :
 
@@ -45,10 +45,11 @@ Each `Theme` is an object with the following properties :
 
 The `themes` parameter also accept an object with the following properties :
 
-* `list` (`Theme[]` - optionnal): The list of themes
+* `list` (`Theme[]` - required): The list of themes
 * `clearable` (`boolean` - optionnal - default is `true`): Can the user clear the selected theme ?
 * `disable` (`boolean` - optionnal): Disable the addon for a story
 * `Decorator` (`Component` - optionnal): A component to use as the decorator component ([see below](#custom-decorator) for more informations)
+* `onChange` (`(themeName: Theme) => void` - optionnal): A callback that will be executed when the theme changes
 
 ## Configuration
 

@@ -37,13 +37,13 @@ const createThemeSelectorItem = memoize(1000)(
 
 const getDisplayableState = memoize(10)(
   (props: ThemeToolProps, state: ThemeToolState, change) => {
-    const { list } = getConfigFromApi(props.api);
+    const { clearable, list } = getConfigFromApi(props.api);
     const selectedThemeName = getSelectedThemeName(list, state.selected);
 
     let availableThemeSelectorItems: ThemeSelectorItem[] = [];
     let selectedTheme: Theme;
 
-    if (selectedThemeName !== 'none') {
+    if (selectedThemeName !== 'none' && clearable) {
       availableThemeSelectorItems.push(
         createThemeSelectorItem('none', 'Clear theme', 'transparent', null, change, false)
       );

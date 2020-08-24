@@ -45,7 +45,8 @@ Each `Theme` is an object with the following properties :
 
 The `themes` parameter also accept an object with the following properties :
 
-* `list` (`Theme[]` - required): The array of themes
+* `list` (`Theme[]` - required): The list of themes
+* `clearable` (`boolean` - optionnal - default is `true`): Can the user clear the selected theme ?
 * `disable` (`boolean` - optionnal): Disable the addon for a story
 * `Decorator` (`Component` - optionnal): A component to use as the decorator component ([see below](#custom-decorator) for more informations)
 * `onChange` (`(themeName: Theme) => void` - optionnal): A callback that will be executed when the theme changes

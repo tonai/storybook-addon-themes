@@ -2,6 +2,7 @@ import { PARAM_KEY } from './constants';
 import { Api, Theme, ThemeConfig } from './models';
 
 const defaultOptions: ThemeConfig = {
+  clearable: true,
   list: []
 };
 

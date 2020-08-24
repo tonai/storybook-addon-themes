@@ -109,11 +109,8 @@ export class ThemeSelector extends Component<ThemeToolProps, ThemeToolState> {
     const { selected } = args;
     const { api } = this.props;
     const { decorator } = this.state;
-    
     this.setState(args);
-    if (decorator) {
-      api.emit(CHANGE, selected);
-    }
+    api.emit(CHANGE, selected);
   };
 
   render() {

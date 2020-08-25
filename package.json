@@ -33,11 +33,11 @@
     "prepare": "node ./scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "next",
-    "@storybook/api": "next",
-    "@storybook/components": "next",
-    "@storybook/core-events": "next",
-    "@storybook/theming": "next",
+    "@storybook/addons": "^6.0.0",
+    "@storybook/api": "^6.0.0",
+    "@storybook/components": "^6.0.0",
+    "@storybook/core-events": "^6.0.0",
+    "@storybook/theming": "^6.0.0",
     "core-js": "^3.6.4",
     "global": "^4.4.0",
     "memoizerific": "^1.11.3"

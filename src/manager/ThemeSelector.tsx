@@ -37,13 +37,13 @@ const createThemeSelectorItem = memoize(1000)(
 
 const getDisplayableState = memoize(10)(
   (props: ThemeToolProps, state: ThemeToolState, change) => {
-    const { list } = getConfigFromApi(props.api);
+    const { clearable, list } = getConfigFromApi(props.api);
     const selectedThemeName = getSelectedThemeName(list, state.selected);
 
     let availableThemeSelectorItems: ThemeSelectorItem[] = [];
     let selectedTheme: Theme;
 
-    if (selectedThemeName !== 'none') {
+    if (selectedThemeName !== 'none' && clearable) {
       availableThemeSelectorItems.push(
         createThemeSelectorItem('none', 'Clear theme', 'transparent', null, change, false)
       );
@@ -73,7 +73,6 @@ interface ThemeToolProps {
 
 interface ThemeToolState {
   decorator: boolean,
-  items: ThemeSelectorItem[];
   selected: string;
   expanded: boolean;
 }
@@ -81,7 +80,6 @@ interface ThemeToolState {
 export class ThemeSelector extends Component<ThemeToolProps, ThemeToolState> {
   state: ThemeToolState = {
     decorator: false,
-    items: [],
     selected: null,
     expanded: false,
   };
@@ -109,11 +107,12 @@ export class ThemeSelector extends Component<ThemeToolProps, ThemeToolState> {
   change = (args: { selected: string; expanded: boolean }) => {
     const { selected } = args;
     const { api } = this.props;
-    const { decorator } = this.state;
-    
+    const { list, onChange } = getConfigFromApi(api);
     this.setState(args);
-    if (decorator) {
-      api.emit(CHANGE, selected);
+    api.emit(CHANGE, selected);
+    if (typeof onChange === 'function') {
+      const selectedTheme = getSelectedTheme(list, selected);
+      onChange(selectedTheme);
     }
   };
 

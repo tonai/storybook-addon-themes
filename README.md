@@ -58,14 +58,12 @@ The `themes` parameter also accept an object with the following properties :
 You can configure the themes globally in the storybook `preview.js` file:
 
 ```js
-import { addParameters } from '@storybook/react'; // <- or your storybook framework
-
-addParameters({
+export const parameters = {
   themes: [
     { name: 'twitter', class: 'theme-twt', color: '#00aced', default: true },
-    { name: 'facebook', class: 'theme-fb', color: '#3b5998' },
-  ],
-});
+    { name: 'facebook', class: 'theme-fb', color: '#3b5998' }
+  ]
+};
 ```
 
 See the [storybook documentation](https://storybook.js.org/docs/addons/using-addons/#global-configuration) for more informations.
@@ -154,16 +152,18 @@ See [here](#framework-support-table) for the list of supported framework.
 Setup the decorator globally in the `preview.js` file:
 
 ```js
-import { addDecorator, addParameters } from '@storybook/react'; // <- or your storybook framework
+import { addDecorator } from '@storybook/react'; // <- or your storybook framework
 import { withThemes } from 'storybook-addon-themes/react'; // <- or your storybook framework
 
-addParameters({
-  themes: [
-    { name: 'twitter', class: 'theme-twt', color: '#00aced', default: true },
-    { name: 'facebook', class: 'theme-fb', color: '#3b5998' },
-  ],
-});
 addDecorator(withThemes);
+
+export const parameters = {
+  actions: { argTypesRegex: "^on[A-Z].*" },
+  themes:  [
+    { name: 'twitter', class: 'theme-twt', color: '#00aced', default: true },
+    { name: 'facebook', class: 'theme-fb', color: '#3b5998' }
+  ]
+};
 ```
 
 ### In story (Component Story Format)

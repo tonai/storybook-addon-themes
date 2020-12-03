@@ -70,6 +70,17 @@
     "shelljs": "^0.8.3",
     "typescript": "^3.7.5"
   },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    },
+    "svelte": {
+      "optional": true
+    },
+    "vue": {
+      "optional": true
+    }
+  },
   "publishConfig": {
     "access": "public"
   }

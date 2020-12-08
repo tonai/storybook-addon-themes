@@ -6,6 +6,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.0.1] - 2020-12-08
+### Added
+- Remove peer dependencies. ([@https://github.com/rcline](https://github.com/https://github.com/rcline) in [#40](https://github.com/tonai/storybook-addon-themes/pull/40))
+- Remove @types/vue + security fix.
+
+## [6.0.0] - 2020-08-25
+### Added
+- Storybook 6.x compatibility.
+- Add PUBLISHING file.
+
 ## [5.5.0] - 2020-08-24
 ### Added
 - Show theme selector in doc tabs. ([@jpzwarte](https://github.com/jpzwarte) in [#29](https://github.com/tonai/storybook-addon-themes/pull/29))

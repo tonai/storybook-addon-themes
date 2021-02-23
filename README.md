@@ -34,7 +34,7 @@ See the [storybook documentation](https://storybook.js.org/docs/addons/using-add
 
 ## Parameters
 
-The `themes` parameter also accept an object with the following properties:
+The `themes` parameter accept an object with the following properties:
 
 * `default` (`string` - optional): Name of theme selected by default  
 * `list` (`Theme[]` - required): The list of themes

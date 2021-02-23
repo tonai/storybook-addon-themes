@@ -15,11 +15,11 @@ const channel = addons.getChannel();
 
 export const ThemeDecorator: React.FC<Props> = (props) => {
   const { children, config } = props;
-  const { Decorator, list } = config;
+  const { Decorator, list, default: defaultTheme } = config;
 
   const [themeName, setThemeName] = useState<string>(() => {
     const lastValue = channel.last(CHANGE);
-    return (lastValue && lastValue[0]) || getSelectedThemeName(list);
+    return (lastValue && lastValue[0]) || getSelectedThemeName(list, defaultTheme);
   });
   const theme = getSelectedTheme(list, themeName);
   const themeClasses = getHtmlClasses(theme);

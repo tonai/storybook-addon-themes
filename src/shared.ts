@@ -13,10 +13,14 @@ export function getConfigFromApi(api: API): ThemeConfig {
   return getConfig(data && data.parameters && data.parameters[PARAM_KEY]);
 }
 
-export function getConfig(parameters: ThemeConfig): ThemeConfig {
+export function getConfig(parameters: ThemeConfig | Theme[]): ThemeConfig {
+  const options = parameters instanceof Array
+    ? { list: parameters }
+    : parameters;
+
   return {
     ...defaultOptions,
-    ...parameters
+    ...options
   };
 }
 
@@ -33,8 +37,16 @@ export function getSelectedThemeName(list: Theme[], defaultTheme?: string, curre
     return currentSelectedValue;
   }
 
-  return defaultTheme || 'none';
-};
+  if (defaultTheme) {
+    return defaultTheme;
+  }
+
+  if (list.find(i => i.default)) {
+    return list.find(i => i.default).name;
+  }
+
+  return 'none';
+}
 
 export function getSelectedTheme(list: Theme[], themeName: string): Theme {
   return list.find(({ name }) => name === themeName);

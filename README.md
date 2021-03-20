@@ -34,19 +34,22 @@ See the [storybook documentation](https://storybook.js.org/docs/addons/using-add
 
 ## Parameters
 
-The `themes` parameter accept an object with the following properties:
+The `themes` parameter accept an array of `Theme` object.
 
-* `default` (`string` - optional): Name of theme selected by default  
+Each `Theme` is an object with the following properties:
+
+* `name` (`string`): Name of the theme
+* `class` (`string | string[]` - optional): HTML class(es) associated with the theme
+* `color` (`string`): The color of the badge in the theme selector
+* `default` [_deprecated_] (`boolean` - optional): Is the theme selected by default?
+
+The `themes` parameter also accept an object with the following properties:
+
+* `default` (`string` - optional): Name of theme selected by default
 * `list` (`Theme[]` - required): The list of themes
-
-    Each `Theme` is an object with the following properties:
-    * `name` (`string`): Name of the theme
-    * `class` (`string | string[]` - optional): HTML class(es) associated with the theme
-    * `color` (`string`): The color of the badge in the theme selector
-
 * `clearable` (`boolean` - optional - default is `true`): Can the user clear the selected theme ?
 * `disable` (`boolean` - optional): Disable the addon for a story
-* `Decorator` (`Component` - optional): A component to use as the decorator component ([see below](#custom-decorator) for more informations)
+* `Decorator` (`Component` - optional): A component to use as the decorator component ([see below](#custom-decorator) for more information)
 * `onChange` (`(themeName: Theme) => void` - optional): A callback that will be executed when the theme changes
 
 ## Configuration
@@ -64,6 +67,19 @@ export const parameters = {
       { name: 'facebook', class: 'theme-fb', color: '#3b5998' }
     ],
   },
+};
+```
+
+For backward compatibility `default` (`boolean`) can also be set directly on `Theme` object.
+**This has been deprecated** because of the difficulty of changing the default theme due to the need to redefine all `Theme` objects.
+
+```jsx
+// deprecated
+export const parameters = {
+  themes: [
+      { name: 'twitter', class: 'theme-twt', color: '#00aced', default: true },
+      { name: 'facebook', class: 'theme-fb', color: '#3b5998' }
+  ],
 };
 ```
 

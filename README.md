@@ -214,6 +214,8 @@ storiesOf('StoriesOf|Button', module)
 
 ### Custom decorator
 
+#### General
+
 You can provide a component that will be used as decorator using the `Decorator` option in the `theme` parameter.
 
 The decorator will get the following properties :
@@ -223,13 +225,53 @@ The decorator will get the following properties :
 * `themeClasses`: The formatted theme classes of the selected theme (if the `class` option exists on the selected theme).
 * `themeName`: The name of the selected theme (equal to `none` if none is selected).
 
-Don't forget to render the story using the `children` prop (for React) or the `<slot></slot>` element (for Vue.js).
+Don't forget to render the story using the `children` prop (React/HTML) or the `<slot></slot>` element (Vue/Svelte).
+
+#### HTML example
+
+To manage reactivity with the HTML storybook your decorator must return an array containing two elements :
+
+* the HTML element to display in the story
+* An update callback that will be called when the theme change. Like the decorator, the callback will receive the same props (without `children`).
 
 Example of a customized decorator that use a CSS file for changing the theme:
 
 ```js
-import { withThemes } from 'storybook-addon-themes/react';
+function getOrCreate(id) {
+  const elementOnDom = document.getElementById(id);
+  if (elementOnDom) {
+    return elementOnDom;
+  }
 
+  const element = document.createElement('link');
+  element.setAttribute('id', id);
+  element.setAttribute('rel', 'stylesheet');
+  return element;
+}
+
+function Decorator(props) {
+  const { children } = props;
+
+  function setStyles({ theme, themeName }) {
+    const link = getOrCreate('theme-stylesheet');
+    if (!theme) {
+      link.parentNode && link.parentNode.removeChild(link);
+    } else {
+      link.href = themeName === 'facebook' ? 'Button-fb.css' : 'Button-twt.css';
+      children.appendChild(link);
+    }
+  }
+  setStyles(props);
+
+  return [children, setStyles];
+}
+```
+
+#### React example
+
+Same example as above for React:
+
+```js
 function Decorator(props) {
   const { children, themeName } = props;
   return (
@@ -240,21 +282,6 @@ function Decorator(props) {
     </>
   );
 };
-
-export default {
-  title: 'CSF|Button',
-  component: Button,
-  decorators: [ withThemes ],
-  parameters: {
-    themes: {
-      Decorator,
-      list: [
-        { name: 'twitter', color: '#00aced', default: true },
-        { name: 'facebook', color: '#3b5998' },
-      ],
-    },
-  },
-};
 ```
 
 ## Framework Support Table
@@ -262,4 +289,4 @@ export default {
 | | [React](app/react)|[React Native](app/react-native)|[Vue](app/vue)|[Angular](app/angular)| [Polymer](app/polymer)| [Mithril](app/mithril)| [HTML](app/html)| [Marko](app/marko)| [Svelte](app/svelte)| [Riot](app/riot)| [Ember](app/ember)| [Preact](app/preact)|
 | ----------- |:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|
 |Usage without decorator |+| |+|+|+|+|+|+|+|+|+|+|
-|Usage with decorator    |+| |+| | | | | |+| | | |
+|Usage with decorator    |+| |+| | | |+| |+| | | |

@@ -12,7 +12,7 @@ function wrapper(getStory: StoryGetter, context: StoryContext, { parameters }: W
   const config = getConfig(parameters as ThemeConfig | Theme[]);
   const channel = addons.getChannel();
   channel.emit(DECORATOR);
-  
+
   return (
     <ThemeDecorator config={config}>
       {getStory(context)}

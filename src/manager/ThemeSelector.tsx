@@ -37,8 +37,8 @@ const createThemeSelectorItem = memoize(1000)(
 
 const getDisplayableState = memoize(10)(
   (props: ThemeToolProps, state: ThemeToolState, change) => {
-    const { clearable, list } = getConfigFromApi(props.api);
-    const selectedThemeName = getSelectedThemeName(list, state.selected);
+    const { clearable, list, default: defaultTheme } = getConfigFromApi(props.api);
+    const selectedThemeName = getSelectedThemeName(list, defaultTheme, state.selected);
 
     let availableThemeSelectorItems: ThemeSelectorItem[] = [];
     let selectedTheme: Theme;
@@ -83,7 +83,7 @@ export class ThemeSelector extends Component<ThemeToolProps, ThemeToolState> {
     selected: null,
     expanded: false,
   };
-  
+
   private setStories = () => this.setState({ selected: null });
 
   private setTheme = (theme: string) => this.setState({ selected: theme });

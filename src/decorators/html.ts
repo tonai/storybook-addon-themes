@@ -39,9 +39,9 @@ function createCallback(list: Theme[], callback: Function) {
 }
 
 export function ThemeDecorator(config: ThemeConfig, element: string|Node) {
-  const { Decorator, list } = config;
+  const { Decorator, list, default: defaultTheme } = config;
   const lastValue = channel.last(CHANGE);
-  const themeName = (lastValue && lastValue[0]) || getSelectedThemeName(list);
+  const themeName = (lastValue && lastValue[0]) || getSelectedThemeName(list, defaultTheme);
   const theme = getSelectedTheme(list, themeName);
   const themeClasses = getHtmlClasses(theme);
 

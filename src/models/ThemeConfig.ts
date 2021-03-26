@@ -6,5 +6,6 @@ export interface ThemeConfig {
   Decorator?: Decorator,
   default?: string,
   list: Theme[],
-  onChange?: (themeName: Theme) => void
+  onChange?: (themeName: Theme) => void,
+  target?: string
 }

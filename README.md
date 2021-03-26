@@ -51,6 +51,7 @@ The `themes` parameter also accept an object with the following properties:
 * `disable` (`boolean` - optional): Disable the addon for a story
 * `Decorator` (`Component` - optional): A component to use as the decorator component ([see below](#custom-decorator) for more information)
 * `onChange` (`(themeName: Theme) => void` - optional): A callback that will be executed when the theme changes
+* `target` (`string` - optional): Target element selected with `document.querySelector()` to which classes are applied. Defaults to `body`, `root` if classes should be applied to `documentElement`.
 
 ## Configuration
 
@@ -184,7 +185,7 @@ withText.story = {
 
 ## Usage with decorator
 
-By default the classes will be added to the `body` element.
+By default the classes will be added to the `body` element or the element configured with `target`.
 
 But in this case your theme will not be visible by other addons (like [@storybook/addon-storyshots](https://github.com/storybookjs/storybook/tree/next/addons/storyshots)).
 

@@ -8,26 +8,41 @@ interface Props {
   iframeId: string;
   selectedTheme: Theme;
   themes: Theme[];
+  target?: string;
 }
 
 export const ThemeStory: React.FC<Props> = (props) => {
-  const { iframeId, selectedTheme, themes } = props;
+  const { iframeId, selectedTheme, target, themes } = props;
 
   useEffect(() => {
+    let targetEl: HTMLElement;
     const iframe = document.getElementById(iframeId);
     if (!iframe) {
       return null;
     }
 
     const iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
-    const { body } = iframeDocument;
+
+    switch(target) {
+        case 'root':
+        case 'html':
+          targetEl = iframeDocument.documentElement;
+        break;
+        default:
+          if(!target || target === 'body') {
+            targetEl = iframeDocument.body;
+          } else {
+            targetEl = iframeDocument.documentElement.querySelector(target);
+          }
+        break;
+    }
 
     // Add selected theme class(es).
     if (selectedTheme && selectedTheme.class) {
       if (typeof selectedTheme.class === 'string') {
-        body.classList.add(selectedTheme.class)
+        targetEl.classList.add(selectedTheme.class)
       } else { // string[]
-        body.classList.add(...selectedTheme.class)
+        targetEl.classList.add(...selectedTheme.class)
       }
     }
 
@@ -35,9 +50,9 @@ export const ThemeStory: React.FC<Props> = (props) => {
       .filter(theme => theme.class)
       .forEach(theme => {
         if (typeof theme.class === 'string') {
-          body.classList.remove(theme.class)
+          targetEl.classList.remove(theme.class)
         } else { // string[]
-          body.classList.remove(...theme.class)
+          targetEl.classList.remove(...theme.class)
         }
       });
   });

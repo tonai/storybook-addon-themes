@@ -1,6 +1,6 @@
 {
   "name": "storybook-addon-themes",
-  "version": "6.0.1",
+  "version": "6.1.0",
   "description": "A storybook addon to switch between different themes for your preview",
   "keywords": [
     "addon",
@@ -15,7 +15,9 @@
     "ui",
     "user interface",
     "vue",
-    "vuejs"
+    "vuejs",
+    "storybook-addon",
+    "style"
   ],
   "homepage": "https://github.com/tonai/storybook-addon-themes",
   "bugs": {
@@ -82,5 +84,11 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "storybook": {
+    "displayName": "Theme switcher",
+    "unsupportedFrameworks": [
+      "react-native"
+    ]
   }
 }

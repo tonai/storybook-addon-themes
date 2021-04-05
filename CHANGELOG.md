@@ -6,9 +6,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.1.0] - 2021-04-05
+### Added
+- Default as string parameter in config. ([@norin89](https://github.com/https://github.com/norin89) in [#43](https://github.com/tonai/storybook-addon-themes/pull/43))
+- Add HTML support for decorators. ([@tonai](https://github.com/https://github.com/tonai) in [#44](https://github.com/tonai/storybook-addon-themes/pull/44))
+- Allow to set target element to apply classes to. ([@pixtron](https://github.com/https://github.com/pixtron) in [#45](https://github.com/tonai/storybook-addon-themes/pull/45))
+- Update Storybook addon metadata. ([@coderkevin](https://github.com/https://github.com/coderkevin) in [#46](https://github.com/tonai/storybook-addon-themes/pull/46))
+
 ## [6.0.1] - 2020-12-08
 ### Added
-- Remove peer dependencies. ([@https://github.com/rcline](https://github.com/https://github.com/rcline) in [#40](https://github.com/tonai/storybook-addon-themes/pull/40))
+- Remove peer dependencies. ([@rcline](https://github.com/https://github.com/rcline) in [#40](https://github.com/tonai/storybook-addon-themes/pull/40))
 - Remove @types/vue + security fix.
 
 ## [6.0.0] - 2020-08-25

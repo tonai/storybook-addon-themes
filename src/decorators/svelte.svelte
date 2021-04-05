@@ -11,9 +11,9 @@
 
   const channel = addons.getChannel();
   const lastValue = channel.last(CHANGE);
-  const { Decorator, list } = config;
+  const { Decorator, list, default: defaultTheme } = config;
 
-  let themeName = (lastValue && lastValue[0]) || getSelectedThemeName(list);
+  let themeName = (lastValue && lastValue[0]) || getSelectedThemeName(list, defaultTheme);
   $: theme = getSelectedTheme(list, themeName);
   $: themeClasses = getHtmlClasses(theme);
 

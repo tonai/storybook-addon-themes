@@ -23,7 +23,7 @@ export const ThemeDecorator = {
   data() {
     const lastValue = channel.last(CHANGE);
     return {
-      themeName: (lastValue && lastValue[0]) || getSelectedThemeName(this.config.list)
+      themeName: (lastValue && lastValue[0]) || getSelectedThemeName(this.config.list, this.config.default)
     };
   },
   methods: {

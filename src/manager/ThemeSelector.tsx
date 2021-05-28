@@ -145,7 +145,7 @@ export class ThemeSelector extends Component<ThemeToolProps, ThemeToolState> {
             active={selectedTheme}
             title="Change the theme of the preview"
           >
-            <Icons icon="photo" />
+            <Icons icon="mirror" />
           </IconButton>
         </WithTooltip>
       </Fragment>

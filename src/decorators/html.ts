@@ -19,9 +19,16 @@ function subscribe(callback: Listener) {
   prevCallback = callback;
 }
 
-function getOrCreate(id: string): HTMLDivElement {
+/*
+ * getOrCreate creates a new div with its id in case of the element hasn't been created before, on another it will return the found element with the id.
+ * id {string}: is required to create or find the div element, unique id for the div.
+ * justCreate {boolean}: by default it's false, if it's 'true' will just create the element, and remove the element that already exists.
+ */
+function getOrCreate(id: string, justCreate: boolean = false): HTMLDivElement {
   const elementOnDom = document.getElementById(id) as HTMLDivElement;
-  if (elementOnDom) {
+  if (justCreate && elementOnDom && elementOnDom.parentElement) {
+    elementOnDom.parentElement.removeChild(elementOnDom);
+  } else if (elementOnDom) {
     return elementOnDom;
   }
 
@@ -45,7 +52,7 @@ export function ThemeDecorator(config: ThemeConfig, element: string|Node) {
   const theme = getSelectedTheme(list, themeName);
   const themeClasses = getHtmlClasses(theme);
 
-  const wrapper = getOrCreate(ADDON_ID);
+  const wrapper = getOrCreate(ADDON_ID, true);
 
   if (element instanceof Node) {
     wrapper.innerHTML = '';

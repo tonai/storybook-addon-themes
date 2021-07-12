@@ -84,7 +84,7 @@ export const parameters = {
 };
 ```
 
-See the [storybook documentation](https://storybook.js.org/docs/addons/using-addons/#global-configuration) for more informations.
+See the [storybook documentation](https://storybook.js.org/docs/addons/using-addons/#global-configuration) for more information.
 
 ### In story (Component Story Format)
 
@@ -201,7 +201,7 @@ Setup the decorator globally in the `preview.js` file:
 
 ```jsx
 import { addDecorator } from '@storybook/react'; // <- or your storybook framework
-import { withThemes } from 'storybook-addon-themes/react'; // <- or your storybook framework
+import { withThemes } from 'storybook-addon-themes'; // <- or your storybook framework
 
 addDecorator(withThemes);
 
@@ -273,7 +273,7 @@ storiesOf('StoriesOf|Button', module)
 
 #### General
 
-You can provide a component that will be used as decorator using the `Decorator` option in the `theme` parameter.
+You can provide a component that will be used as decorator using the `Decorator` option in the `theme` parameter. This requires `withThemes` to be included in the storybook [`decorators`](https://storybook.js.org/docs/react/writing-stories/decorators) array.
 
 The decorator will get the following properties :
 
@@ -341,9 +341,29 @@ function Decorator(props) {
 };
 ```
 
+### Globals - React only
+
+Creating a storybook [decorator](https://storybook.js.org/docs/react/essentials/toolbars-and-globals#create-a-decorator) gives you access to the story context including [`globals`](https://storybook.js.org/docs/react/essentials/toolbars-and-globals#globals). This allows for accessing the selected theme name via `context.global.themes.value`.
+
+```js
+// .storybook/preview.js
+
+import React from 'react';
+
+export const decorators = [
+  (Story, context) => (
+    <div style={{ margin: '3em' }}>
+      <h1>Theme: {context.themes.value}</h1>
+      <Story />
+    </div>
+  ),
+];
+```
+
 ## Framework Support Table
 
 | | [React](app/react)|[React Native](app/react-native)|[Vue](app/vue)|[Angular](app/angular)| [Polymer](app/polymer)| [Mithril](app/mithril)| [HTML](app/html)| [Marko](app/marko)| [Svelte](app/svelte)| [Riot](app/riot)| [Ember](app/ember)| [Preact](app/preact)|
 | ----------- |:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|
 |Usage without decorator |+| |+|+|+|+|+|+|+|+|+|+|
 |Usage with decorator    |+| |+| | | |+| |+| | | |
+|Usage with `context.globals` |+| | | | | | | | | | | |

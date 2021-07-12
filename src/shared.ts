@@ -3,7 +3,7 @@ import { API } from '@storybook/api';
 import { PARAM_KEY } from './constants';
 import { Theme, ThemeConfig } from './models';
 
-const defaultOptions: ThemeConfig = {
+export const defaultOptions: ThemeConfig = {
   clearable: true,
   list: []
 };

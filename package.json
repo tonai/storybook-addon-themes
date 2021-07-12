@@ -73,6 +73,7 @@
   },
   "peerDependenciesMeta": {
     "react": {
+      "react": "^16.8.0",
       "optional": true
     },
     "svelte": {

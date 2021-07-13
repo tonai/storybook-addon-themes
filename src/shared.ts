@@ -5,6 +5,7 @@ import { Theme, ThemeConfig } from './models';
 
 const defaultOptions: ThemeConfig = {
   clearable: true,
+  icon: 'mirror',
   list: []
 };
 

@@ -45,6 +45,7 @@ Each `Theme` is an object with the following properties:
 
 The `themes` parameter also accept an object with the following properties:
 
+* `icon` (`string` - optional - default is `'mirror'`): The icon to use for the addon in the toolbar ([options](https://github.com/storybookjs/design-system/blob/b4524b4cdeed9a7d4d4e8d516bffcba59d14e4e0/src/components/shared/icons.ts))
 * `default` (`string` - optional): Name of theme selected by default
 * `list` (`Theme[]` - required): The list of themes
 * `clearable` (`boolean` - optional - default is `true`): Can the user clear the selected theme ?

@@ -55,7 +55,7 @@ export const ThemeStory: React.FC<Props> = (props) => {
           targetEl.classList.remove(...theme.class)
         }
       });
-  });
+  }, [iframeId, selectedTheme, target, themes]);
 
   return null;
 }

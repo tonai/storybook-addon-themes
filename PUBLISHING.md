@@ -13,7 +13,7 @@ The publishable addon lives in `packages/storybook-addon-themes`. The root is a 
    - Environment: `npm`
 4. Push the workflow to `10.x` once ready to enable releases. No npm token is needed. npm 11 uses GitHub OIDC and the workflow requests provenance.
 
-The existing npm package must be administered by an account that can configure its trusted publisher. This repository change does not configure GitHub/npm account settings, publish a package, or create a remote release.
+The existing npm package must be administered by an account that can configure its trusted publisher. Configure these settings directly in GitHub and npm.
 
 The workflow follows [Changesets Action v2](https://github.com/changesets/action) with Changesets CLI v3 and [npm trusted publishing](https://docs.npmjs.com/trusted-publishers/).
 
@@ -32,14 +32,6 @@ The workflow follows [Changesets Action v2](https://github.com/changesets/action
 The default npm dist-tag is **`latest`**. Only `10.x` in the upstream repository can release. Release runs are serialized and never canceled mid-publication. Ordinary PR workflows have read-only permissions and cannot publish.
 
 Documentation/tooling changes do not need a changeset. An optional `npm run changeset -- --empty` records that no release is needed.
-
-## Preparing the initial release
-
-The package uses `9.0.0` solely as an unpublished versioning baseline. The major changeset in `.changeset/storybook-10-release.md` advances it to **10.0.0** and generates the release notes in the version PR.
-
-Push the baseline and changeset together. Keep the changeset pending on `10.x` until the generated version PR is merged; do not run `npm run release` on the baseline. With this pending changeset, the release workflow opens a version PR instead of publishing `9.0.0`.
-
-Review the generated `10.0.0` manifest, changelog, and lockfile, then merge the version PR to publish after validation. Once that release is complete, continue adding patch/minor/major changesets normally; do not reset the version baseline again.
 
 ## Release PR checks and branch protection
 

@@ -29,6 +29,6 @@ To use another framework, run `npm run build -- --watch` and `npm run storybook 
 
 Run `npm run changeset` when making a user-facing change and include the generated release note in your PR. On `10.x`, CI validates the changes, Changesets opens a version PR, and merging that PR publishes to npm and creates a GitHub release.
 
-See [PUBLISHING.md](PUBLISHING.md) for the one-time trusted-publisher setup, initial 10.0.0 release behavior, and recovery instructions. The example apps are never published.
+See [PUBLISHING.md](PUBLISHING.md) for the one-time trusted-publisher setup, release workflow, and recovery instructions. The example apps are never published.
 
 MIT licensed.

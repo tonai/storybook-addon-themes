@@ -1,349 +1,178 @@
 # Storybook Addon Themes
 
-Greatly inspired by [@storybook/addon-backgrounds](https://github.com/storybooks/storybook/tree/next/addons/backgrounds).
+A theme switcher for **Storybook 10**. Apply CSS classes to your preview, choose themes in the toolbar, and share the selection through Storybook globals. The preview implementation is framework independent; React is only used in Storybook's manager.
 
-This Storybook Theme Decorator can be used to add a custom HTML class or classes to the preview in [Storybook](https://storybook.js.org).
+For Storybook 6, use `storybook-addon-themes@6`. Version 10 is an ESM package and requires Node **20.19+ or 22.12+** (use a supported LTS release).
 
-![Demo](media/demo.gif)
-
-## Compatibility
-
-This version is compatible with storybook version `6.0.x`.
-
-## Installation
+## Install
 
 ```sh
-npm i -D storybook-addon-themes
+npm install --save-dev storybook-addon-themes
 ```
 
-## Getting started
+Register the addon in `.storybook/main.ts`:
 
-Then activate the addon by adding it to the storybook `main.js` file (located in the Storybook config directory):
+```ts
+import type { StorybookConfig } from '@storybook/react-vite'; // your framework
 
-```jsx
-module.exports = {
-  addons: [
-    // Maybe other addons here...
-    'storybook-addon-themes'
-    // Or here...
-  ],
-};
+export default {
+  framework: '@storybook/react-vite',
+  stories: ['../src/**/*.stories.@(ts|tsx)'],
+  addons: ['storybook-addon-themes'],
+} satisfies StorybookConfig;
 ```
 
-See the [storybook documentation](https://storybook.js.org/docs/addons/using-addons/) for more informations.
+Configure `.storybook/preview.ts`:
+
+```ts
+import type { Preview } from '@storybook/react-vite';
+import type { ThemeConfig } from 'storybook-addon-themes';
+import '../src/themes.css';
+
+export default {
+  parameters: {
+    themes: {
+      default: 'light',
+      list: [
+        { name: 'light', class: 'theme-light', color: '#f8fafc' },
+        { name: 'dark', class: ['theme-dark', 'dark-mode'], color: '#0f172a' },
+      ],
+    } satisfies ThemeConfig,
+  },
+} satisfies Preview;
+```
+
+```css
+.theme-light {
+  --surface: #f8fafc;
+  --text: #0f172a;
+}
+.theme-dark {
+  --surface: #0f172a;
+  --text: #f8fafc;
+}
+.card {
+  background: var(--surface);
+  color: var(--text);
+}
+```
+
+No manual decorator registration is needed. The addon does not ship theme CSS; it switches your classes.
 
 ## Parameters
 
-The `themes` parameter accept an array of `Theme` object.
+Set `parameters.themes` globally, on a component, or on a story. Storybook merges object parameters, so a story can override a single option.
 
-Each `Theme` is an object with the following properties:
+| Option      | Default  | Meaning                                                                                      |
+| ----------- | -------- | -------------------------------------------------------------------------------------------- |
+| `list`      | `[]`     | Themes with unique `name`, optional `class: string \| string[]`, and optional `color` swatch |
+| `default`   | none     | Initial theme name, used when there is no valid global selection                             |
+| `clearable` | `true`   | Offer “Clear theme”; when false, fall back to the default or first theme                     |
+| `disable`   | `false`  | Hide the tool and remove this story's applied classes                                        |
+| `target`    | `'body'` | CSS selector for the first matching element; `'root'` means `<html>`                         |
+| `onChange`  | none     | Preview callback `(theme: Theme \| undefined) => void \| (() => void)`                       |
 
-* `name` (`string`): Name of the theme
-* `class` (`string | string[]` - optional): HTML class(es) associated with the theme
-* `color` (`string`): The color of the badge in the theme selector
-* `default` [_deprecated_] (`boolean` - optional): Is the theme selected by default?
+Use nonempty, unique theme names; `none` is reserved for clearing. Names used in Storybook URLs should use letters, numbers, spaces, underscores, and hyphens. Class strings are split on whitespace and deduplicated. The legacy array form and per-theme `default: true` are still accepted; prefer the object form.
 
-The `themes` parameter also accept an object with the following properties:
+A custom target may mount after the story renders and may be replaced during updates. The addon follows those changes and cleans up when the story unmounts. Unrelated and preexisting classes are preserved.
 
-* `default` (`string` - optional): Name of theme selected by default
-* `list` (`Theme[]` - required): The list of themes
-* `clearable` (`boolean` - optional - default is `true`): Can the user clear the selected theme ?
-* `disable` (`boolean` - optional): Disable the addon for a story
-* `Decorator` (`Component` - optional): A component to use as the decorator component ([see below](#custom-decorator) for more information)
-* `onChange` (`(themeName: Theme) => void` - optional): A callback that will be executed when the theme changes
-* `target` (`string` - optional): Target element selected with `document.querySelector()` to which classes are applied. Defaults to `body`, `root` if classes should be applied to `documentElement`.
-
-## Configuration
-
-### Globally
-
-You can configure the themes globally in the storybook `preview.js` file:
-
-```jsx
-export const parameters = {
-  themes: {
-    default: 'twitter',
-    list: [
-      { name: 'twitter', class: 'theme-twt', color: '#00aced' },
-      { name: 'facebook', class: 'theme-fb', color: '#3b5998' }
-    ],
-  },
+```ts
+export const DarkByDefault = {
+  parameters: { themes: { default: 'dark' } },
+};
+export const WithoutThemes = {
+  parameters: { themes: { disable: true } },
+};
+export const OnTheCard = {
+  parameters: { themes: { target: '.card' } },
 };
 ```
 
-For backward compatibility `default` (`boolean`) can also be set directly on `Theme` object.
-**This has been deprecated** because of the difficulty of changing the default theme due to the need to redefine all `Theme` objects.
+## Globals, fixed stories, and custom providers
 
-```jsx
-// deprecated
-export const parameters = {
-  themes: [
-      { name: 'twitter', class: 'theme-twt', color: '#00aced', default: true },
-      { name: 'facebook', class: 'theme-fb', color: '#3b5998' }
-  ],
-};
+The selected name lives in `globals.theme`. A valid global selection takes precedence over `parameters.themes.default`. An unknown name falls back to the story's default. Explicit `none` clears the theme unless `clearable` is false.
+
+```ts
+// preview.ts: optional initial selection that takes precedence over defaults
+export default { initialGlobals: { theme: 'dark' } };
+
+// A story-level global locks the toolbar for reproducible screenshots.
+export const AlwaysDark = { globals: { theme: 'dark' } };
 ```
 
-See the [storybook documentation](https://storybook.js.org/docs/addons/using-addons/#global-configuration) for more informations.
+Storybook carries globals between stories and encodes them in the URL, for example `?path=/story/button--primary&globals=theme:dark`. Standalone `iframe.html` previews also work without the manager.
 
-### In story (Component Story Format)
+Use a regular framework decorator for context providers. The exported resolver keeps its selection consistent with the toolbar:
 
-Or configure the themes in your story file like this:
+```tsx
+import { getConfig, getSelectedTheme } from 'storybook-addon-themes';
 
-```jsx
-export default {
-  title: 'CSF|Button',
-  component: Button,
-  parameters: {
-    themes: {
-      default: 'twitter',
-      list: [
-        { name: 'twitter', class: ['theme-twt', 'light-mode'], color: '#00aced' },
-        { name: 'facebook', class: ['theme-fb', 'dark-mode'], color: '#3b5998' },
-      ],
-    },
-  },
-};
-```
-
-If you only want to activate the addon or override the themes for a specific story you can write:
-
-```jsx
-export default {
-  title: 'CSF|Button',
-  component: Button,
-};
-
-export const withText = () => <Button onClick={action('clicked')}>Hello Button</Button>;
-withText.story = {
-  parameters: {
-    themes: {
-      default: 'twitter',
-      list: [
-        { name: 'twitter', class: ['theme-twt', 'light-mode'], color: '#00aced' },
-        { name: 'facebook', class: ['theme-fb', 'dark-mode'], color: '#3b5998' },
-      ],
-    },
-  },
-};
-```
-
-### In story (StoriesOf API)
-
-Alternatively with the old StoriesOf API:
-
-```jsx
-import { storiesOf } from '@storybook/react'; // <- or your storybook framework
-
-storiesOf('StoriesOf|Button', module)
-  .addParameters({
-    themes: {
-      default: 'twitter',
-      list: [
-        { name: 'twitter', class: ['theme-twt', 'light-mode'], color: '#00aced' },
-        { name: 'facebook', class: ['theme-fb', 'dark-mode'], color: '#3b5998' },
-      ],
-    },
-  })
-  .add('with text', () => <button>Click me</button>);
-```
-
-And for a single story:
-
-```jsx
-import { storiesOf } from '@storybook/react';
-
-storiesOf('StoriesOf|Button', module)
-  .add('with text', () => <button>Click me</button>, {
-    themes: {
-      list: [
-        { name: 'red', class: 'theme-red', color: 'rgba(255, 0, 0)' },
-      ],
-    },
-  });
-
-```
-
-### Overwriting single properties
-
-You can also only override a single key on the themes parameter, for instance to set a different default value for a single story:
-```jsx
-export default {
-  title: 'CSF|Button',
-  component: Button,
-};
-
-export const withText = () => <Button onClick={action('clicked')}>Hello Button</Button>;
-withText.story = {
-  parameters: {
-    themes: {
-      default: 'facebook',
-    },
-  },
-};
-```
-
-## Usage with decorator
-
-By default the classes will be added to the `body` element or the element configured with `target`.
-
-But in this case your theme will not be visible by other addons (like [@storybook/addon-storyshots](https://github.com/storybookjs/storybook/tree/next/addons/storyshots)).
-
-To fix this you can add the `withThemes` decorator in your stories.
-
-But the decorator method is not available for all frameworks
-
-See [here](#framework-support-table) for the list of supported framework.
-
-### Globally
-
-Setup the decorator globally in the `preview.js` file:
-
-```jsx
-import { addDecorator } from '@storybook/react'; // <- or your storybook framework
-import { withThemes } from 'storybook-addon-themes/react'; // <- or your storybook framework
-
-addDecorator(withThemes);
-
-export const parameters = {
-  actions: { argTypesRegex: "^on[A-Z].*" },
-  themes: {
-    default: 'twitter',
-    list: [
-      { name: 'twitter', class: ['theme-twt', 'light-mode'], color: '#00aced' },
-      { name: 'facebook', class: ['theme-fb', 'dark-mode'], color: '#3b5998' },
-    ],
-  },
-};
-```
-
-### In story (Component Story Format)
-
-Or in your story file (for all stories in that file):
-
-```jsx
-export default {
-  title: 'CSF|Button',
-  component: Button,
-  decorators: [ withThemes ],
-  parameters: {
-    themes: {
-      default: 'twitter',
-      list: [
-        { name: 'twitter', class: ['theme-twt', 'light-mode'], color: '#00aced' },
-        { name: 'facebook', class: ['theme-fb', 'dark-mode'], color: '#3b5998' },
-      ],
-    },
-  },
-};
-```
-
-Or just for a specific story:
-
-```jsx
-export const withText = () => <Button onClick={action('clicked')}>Hello Button</Button>;
-withText.story = {
-  decorators: [ withThemes ],
-  parameters: {
-    themes: {
-      default: 'twitter',
-      list: [
-        { name: 'twitter', class: ['theme-twt', 'light-mode'], color: '#00aced' },
-        { name: 'facebook', class: ['theme-fb', 'dark-mode'], color: '#3b5998' },
-      ],
-    },
-  },
-};
-```
-
-### In story (StoriesOf API)
-
-And alternatively with the old StoriesOf API:
-
-```jsx
-import { storiesOf } from '@storybook/react'; // <- or your storybook framework
-import { withThemes } from 'storybook-addon-themes/react';
-
-storiesOf('StoriesOf|Button', module)
-  .addDecorator(withThemes)
-  .add('with text', () => <button>Click me</button>);
-```
-
-### Custom decorator
-
-#### General
-
-You can provide a component that will be used as decorator using the `Decorator` option in the `theme` parameter.
-
-The decorator will get the following properties :
-
-* `theme`: The selected theme or `undefined` if none is selected.
-* `themes`: The list of themes as provided in the `list` option of the `theme` parameter.
-* `themeClasses`: The formatted theme classes of the selected theme (if the `class` option exists on the selected theme).
-* `themeName`: The name of the selected theme (equal to `none` if none is selected).
-
-Don't forget to render the story using the `children` prop (React/HTML) or the `<slot></slot>` element (Vue/Svelte).
-
-#### HTML example
-
-To manage reactivity with the HTML storybook your decorator must return an array containing two elements :
-
-* the HTML element to display in the story
-* An update callback that will be called when the theme change. Like the decorator, the callback will receive the same props (without `children`).
-
-Example of a customized decorator that use a CSS file for changing the theme:
-
-```js
-function getOrCreate(id) {
-  const elementOnDom = document.getElementById(id);
-  if (elementOnDom) {
-    return elementOnDom;
-  }
-
-  const element = document.createElement('link');
-  element.setAttribute('id', id);
-  element.setAttribute('rel', 'stylesheet');
-  return element;
-}
-
-function Decorator(props) {
-  const { children } = props;
-
-  function setStyles({ theme, themeName }) {
-    const link = getOrCreate('theme-stylesheet');
-    if (!theme) {
-      link.parentNode && link.parentNode.removeChild(link);
-    } else {
-      link.href = themeName === 'facebook' ? 'Button-fb.css' : 'Button-twt.css';
-      children.appendChild(link);
-    }
-  }
-  setStyles(props);
-
-  return [children, setStyles];
-}
-```
-
-#### React example
-
-Same example as above for React:
-
-```js
-function Decorator(props) {
-  const { children, themeName } = props;
+const withProvider = (Story, context) => {
+  const theme = getSelectedTheme(
+    getConfig(context.parameters.themes),
+    context.globals.theme,
+  );
   return (
-    <>
-      {children}
-      {themeName === 'twitter' && <link rel="stylesheet" href="twitter.css"/>}
-      {themeName === 'facebook' && <link rel="stylesheet" href="facebook.css"/>}
-    </>
+    <MyThemeProvider theme={theme?.name}>
+      <Story />
+    </MyThemeProvider>
   );
 };
 ```
 
-## Framework Support Table
+`onChange` now runs **inside the preview**, including the initial render. It receives `undefined` when cleared and may return cleanup logic. Use it for effects such as switching a stylesheet. Story changes can remount the effect; it is not an analytics event for toolbar clicks.
 
-| | [React](app/react)|[React Native](app/react-native)|[Vue](app/vue)|[Angular](app/angular)| [Polymer](app/polymer)| [Mithril](app/mithril)| [HTML](app/html)| [Marko](app/marko)| [Svelte](app/svelte)| [Riot](app/riot)| [Ember](app/ember)| [Preact](app/preact)|
-| ----------- |:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|
-|Usage without decorator |+| |+|+|+|+|+|+|+|+|+|+|
-|Usage with decorator    |+| |+| | | |+| |+| | | |
+## Docs and scope
+
+Classes are applied in both Canvas and Docs previews. The toolbar appears in Canvas. A shared body/root target affects the entire preview document: inline Docs stories cannot display conflicting themes independently on that target. Use iframe-rendered Docs stories for independent themes. Custom selectors select only the first matching element and do not pierce shadow roots; Web Components should inherit CSS custom properties from their host.
+
+Do not enable another addon that also owns `globals.theme` (such as `@storybook/addon-themes`) alongside this one.
+
+## Framework examples and local development
+
+[`examples-app`](examples-app/README.md) contains working npm workspaces for React, Vue 3, Svelte 5, HTML, Preact, Web Components (Lit), and Angular. Every app consumes the built package through its public preset and exports, with the same browser regression suite. React Native and renderers removed from Storybook 10 are not supported.
+
+```sh
+nvm use
+npm install --global npm@11.19.1
+npm ci
+npm run dev                         # build watcher + React Storybook on :6006
+```
+
+To work with another framework, use two terminals:
+
+```sh
+npm run build -- --watch
+npm run storybook -w examples-app/vue3
+```
+
+No global symlink or publish step is required. Manager/preset changes may require restarting Storybook; preview edits are picked up by the development server.
+
+## Validation
+
+```sh
+npm run check                       # lint, TypeScript, unit coverage, package build
+npx playwright install chromium     # once per machine
+npm run test:e2e                     # build every app, then run Chromium tests
+npm run test:e2e:built               # rerun against existing builds
+npm run test:e2e:built -- --project=vue3
+npm run format:check
+```
+
+Vitest enforces 90% coverage for statements, branches, functions, and lines in configuration, DOM lifecycle, and preview code. Playwright exercises the manager and preview together in every framework: switching and clearing, CSS appearance, navigation cleanup, URL globals, fixed stories, custom targets, callbacks, and standalone previews. CI runs both suites and retains browser failure artifacts.
+
+## Migrating from 6.x
+
+- Upgrade Storybook and its framework package to 10, then install version 10 of this addon.
+- Keep `parameters.themes` and your CSS. The main options and legacy array configuration are supported.
+- Remove `storybook-addon-themes/register` and framework-specific imports (`/react`, `/vue`, `/svelte`, `/html`). Register only `storybook-addon-themes` in `main.ts`; its preset adds the preview decorator automatically.
+- Replace the old `Decorator` parameter with a regular framework decorator that reads `context.globals.theme`, as shown above. This removes framework-specific component and slot contracts.
+- Move `onChange` browser effects to preview configuration. It no longer executes in the manager, and runs on initial mount as well as changes.
+- Migrate `storiesOf`/`addDecorator` to CSF and preview configuration. Vue means Vue 3; Svelte means Svelte 5.
+- Storybook 11 prereleases are not included in the peer range or compatibility promise.
+
+## Package maintenance
+
+The build follows the [official Addon Kit](https://github.com/storybookjs/addon-kit) and [Storybook 10 migration guide](https://storybook.js.org/docs/addons/addon-migration-guide): TypeScript, tsup, ESM exports, a lightweight preset, separate manager and preview bundles, and Storybook-provided manager dependencies externalized. See [PUBLISHING.md](PUBLISHING.md) for release checks.
+
+MIT licensed.

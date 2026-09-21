@@ -1,0 +1,9 @@
+node_modules
+dist
+package-lock.json
+storybook-static
+coverage
+playwright-report
+test-results
+CHANGELOG.md
+.angular/

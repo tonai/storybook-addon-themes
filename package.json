@@ -1,6 +1,6 @@
 {
   "name": "storybook-addon-themes",
-  "version": "6.1.0",
+  "version": "10.0.0",
   "description": "A storybook addon to switch between different themes for your preview",
   "keywords": [
     "addon",
@@ -29,66 +29,92 @@
   },
   "license": "MIT",
   "author": "tonai",
-  "main": "dist/react.js",
-  "types": "dist/react.d.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
-    "prepare": "node ./scripts/prepare.js"
-  },
-  "dependencies": {
-    "@storybook/addons": "^6.0.0",
-    "@storybook/api": "^6.0.0",
-    "@storybook/components": "^6.0.0",
-    "@storybook/core-events": "^6.0.0",
-    "@storybook/theming": "^6.0.0",
-    "core-js": "^3.6.4",
-    "global": "^4.4.0",
-    "memoizerific": "^1.11.3"
+    "build": "tsup",
+    "dev": "npm run build && concurrently -k \"tsup --watch\" \"npm run storybook -w examples-app/react\"",
+    "typecheck": "tsc --noEmit && npm run typecheck --workspaces",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:watch": "vitest",
+    "build:examples": "npm run build && npm run build-storybook --workspaces",
+    "test:e2e": "npm run build:examples && playwright test",
+    "test:e2e:built": "playwright test",
+    "check": "npm run lint && npm run typecheck && npm run test:coverage",
+    "prepack": "npm run build",
+    "prebuild": "node -e \"fs.rmSync('dist', { recursive: true, force: true })\"",
+    "pretypecheck": "npm run build"
   },
   "devDependencies": {
-    "@babel/cli": "^7.8.3",
-    "@babel/core": "^7.8.3",
-    "@babel/plugin-proposal-class-properties": "^7.8.3",
-    "@babel/plugin-proposal-decorators": "^7.8.3",
-    "@babel/plugin-proposal-export-default-from": "^7.8.3",
-    "@babel/plugin-proposal-object-rest-spread": "^7.8.3",
-    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
-    "@babel/plugin-transform-runtime": "^7.8.3",
-    "@babel/preset-env": "^7.8.3",
-    "@babel/preset-flow": "^7.8.3",
-    "@babel/preset-react": "^7.8.3",
-    "@babel/preset-typescript": "^7.8.3",
-    "@types/jest": "^25.1.1",
-    "@types/node": "^13.7.0",
-    "@types/react": "^16.8.14",
-    "@types/webpack": "^4.41.4",
-    "@types/webpack-env": "^1.15.1",
-    "babel-plugin-dynamic-import-node": "^2.3.0",
-    "babel-plugin-emotion": "^10.0.27",
-    "babel-plugin-macros": "^2.8.0",
-    "babel-plugin-require-context-hook": "^1.0.0",
-    "chalk": "^3.0.0",
-    "npmlog": "^4.1.2",
-    "shelljs": "^0.8.3",
-    "typescript": "~3.7.5"
-  },
-  "peerDependenciesMeta": {
-    "react": {
-      "optional": true
-    },
-    "svelte": {
-      "optional": true
-    },
-    "vue": {
-      "optional": true
-    }
+    "@eslint/js": "^9.39.0",
+    "eslint": "^9.39.0",
+    "typescript-eslint": "^8.0.0",
+    "@playwright/test": "^1.58.0",
+    "@storybook/addon-docs": "10.6.0",
+    "@storybook/icons": "^2.0.0",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitest/coverage-v8": "^5.0.1",
+    "concurrently": "^9.0.0",
+    "jsdom": "^26.0.0",
+    "prettier": "^3.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "http-server": "^14.1.1",
+    "storybook": "10.6.0",
+    "tsup": "^8.5.0",
+    "typescript": "~5.9.3",
+    "vite": "^6.3.0",
+    "vitest": "^5.0.1"
   },
   "publishConfig": {
     "access": "public"
   },
   "storybook": {
     "displayName": "Theme switcher",
-    "unsupportedFrameworks": [
-      "react-native"
+    "supportedFrameworks": [
+      "react",
+      "vue3",
+      "svelte",
+      "html",
+      "preact",
+      "web-components",
+      "angular"
     ]
-  }
+  },
+  "type": "module",
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  },
+  "workspaces": [
+    "examples-app/*"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./preview": {
+      "types": "./dist/preview.d.ts",
+      "default": "./dist/preview.js"
+    },
+    "./manager": "./dist/manager.js",
+    "./preset": "./dist/preset.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "preset.js",
+    "README.md",
+    "LICENSE"
+  ],
+  "peerDependencies": {
+    "storybook": "^10.0.0"
+  },
+  "packageManager": "npm@11.19.1"
 }

@@ -1,4 +1,9 @@
-node_modules
-*.log
-.idea
-dist
+node_modules/
+dist/
+storybook-static/
+coverage/
+playwright-report/
+test-results/
+*.tsbuildinfo
+.DS_Store
+.angular/

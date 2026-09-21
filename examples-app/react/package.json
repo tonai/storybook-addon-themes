@@ -1,0 +1,16 @@
+{
+  "name": "@themes-example/react",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "storybook": "storybook dev -p 6006 --no-open",
+    "build-storybook": "storybook build",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@storybook/react-vite": "10.6.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "storybook-addon-themes": "file:../.."
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "@themes-example/web-components",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "storybook": "storybook dev -p 6011 --no-open",
+    "build-storybook": "storybook build",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@storybook/web-components-vite": "10.6.0",
+    "lit": "^3.0.0",
+    "storybook-addon-themes": "file:../.."
+  }
+}

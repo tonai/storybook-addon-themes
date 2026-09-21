@@ -1,0 +1,28 @@
+{
+  "name": "@themes-example/angular",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "storybook": "ng run themes:storybook",
+    "build-storybook": "ng run themes:build-storybook",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@storybook/angular": "10.6.0",
+    "@angular/core": "^21.2.23",
+    "@angular/common": "^21.2.23",
+    "@angular/compiler": "^21.2.23",
+    "@angular/compiler-cli": "^21.2.23",
+    "@angular/platform-browser": "^21.2.23",
+    "@angular/platform-browser-dynamic": "^21.2.23",
+    "@angular/animations": "^21.2.23",
+    "@angular/cli": "^21.2.24",
+    "@angular-devkit/core": "^21.2.24",
+    "@angular-devkit/architect": "^0.2102.24",
+    "@angular-devkit/build-angular": "^21.2.24",
+    "rxjs": "^7.8.0",
+    "zone.js": "~0.15.0",
+    "typescript": "~5.9.3",
+    "storybook-addon-themes": "file:../.."
+  }
+}

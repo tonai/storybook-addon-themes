@@ -1,3 +1,12 @@
+# 10.0.0 (unreleased)
+
+- Rewrite for Storybook 10 with ESM exports, tsup, and automatic preview registration.
+- Use Storybook globals for URL-backed selection and fixed per-story themes.
+- Preserve class ownership and clean up effects across story and target changes.
+- Add seven framework example workspaces, unit coverage gates, Playwright tests, and CI.
+- Keep the main theme parameters; replace framework-specific decorator APIs with native Storybook decorators.
+- Run `onChange` in the preview with optional cleanup; remove Storybook 6 entry points.
+
 # Changelog
 All notable changes to this project will be documented in this file.
 

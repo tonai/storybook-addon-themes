@@ -1,0 +1,15 @@
+{
+  "name": "@themes-example/preact",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "storybook": "storybook dev -p 6010 --no-open",
+    "build-storybook": "storybook build",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@storybook/preact-vite": "10.6.0",
+    "preact": "^10.0.0",
+    "storybook-addon-themes": "file:../.."
+  }
+}

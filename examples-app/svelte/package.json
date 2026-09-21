@@ -1,0 +1,17 @@
+{
+  "name": "@themes-example/svelte",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "storybook": "storybook dev -p 6008 --no-open",
+    "build-storybook": "storybook build",
+    "typecheck": "svelte-check --tsconfig ./tsconfig.json"
+  },
+  "devDependencies": {
+    "@storybook/svelte-vite": "10.6.0",
+    "svelte": "^5.0.0",
+    "@sveltejs/vite-plugin-svelte": "^5.0.0",
+    "storybook-addon-themes": "file:../..",
+    "svelte-check": "^4.0.0"
+  }
+}

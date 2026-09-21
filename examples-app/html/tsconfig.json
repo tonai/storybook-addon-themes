@@ -1,16 +1,14 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "lib": ["ES2022", "DOM"],
     "module": "ESNext",
     "moduleResolution": "Bundler",
-    "jsx": "react",
+    "jsx": "react-jsx",
     "strict": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "noEmit": true,
+    "lib": ["ES2022", "DOM"],
     "types": ["node"]
   },
-  "include": ["src", "tests", "*.ts"]
+  "include": ["src/**/*", ".storybook/**/*.ts", "vite.config.ts"]
 }

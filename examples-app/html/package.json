@@ -1,0 +1,14 @@
+{
+  "name": "@themes-example/html",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "storybook": "storybook dev -p 6009 --no-open",
+    "build-storybook": "storybook build",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@storybook/html-vite": "10.6.0",
+    "storybook-addon-themes": "file:../.."
+  }
+}

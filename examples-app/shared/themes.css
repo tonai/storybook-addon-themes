@@ -1,0 +1,32 @@
+body {
+  font-family: system-ui, sans-serif;
+}
+.theme-light {
+  --surface: #f8fafc;
+  --text: #0f172a;
+  --accent: #4f46e5;
+}
+.theme-dark {
+  --surface: #0f172a;
+  --text: #f8fafc;
+  --accent: #a5b4fc;
+}
+.theme-ocean {
+  --surface: #e0f2fe;
+  --text: #0c4a6e;
+  --accent: #0369a1;
+}
+.sample-card {
+  padding: 2rem;
+  border-radius: 1rem;
+  background: var(--surface, #eee);
+  color: var(--text, #333);
+}
+.sample-card button {
+  font: inherit;
+  padding: 0.6rem 1rem;
+  border: 2px solid var(--accent, #666);
+  border-radius: 0.4rem;
+  color: inherit;
+  background: transparent;
+}

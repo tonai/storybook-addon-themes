@@ -11,6 +11,6 @@
     "@storybook/react-vite": "10.6.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "storybook-addon-themes": "file:../.."
+    "storybook-addon-themes": "*"
   }
 }

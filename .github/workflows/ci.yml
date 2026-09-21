@@ -1,7 +1,7 @@
 name: CI
 on:
-  push:
-    branches: [10.x]
+  workflow_call:
+  workflow_dispatch:
   pull_request:
 permissions:
   contents: read
@@ -22,7 +22,7 @@ jobs:
       - run: npm run test:e2e
         env:
           STORYBOOK_DISABLE_TELEMETRY: '1'
-      - run: npm pack --dry-run
+      - run: npm pack --dry-run -w storybook-addon-themes
       - uses: actions/upload-artifact@v4
         if: failure()
         with:

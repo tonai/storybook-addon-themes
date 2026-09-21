@@ -3,7 +3,7 @@ import ts from 'typescript-eslint';
 export default ts.config(
   {
     ignores: [
-      'dist/**',
+      '**/dist/**',
       '**/.angular/**',
       '**/storybook-static/**',
       'coverage/**',

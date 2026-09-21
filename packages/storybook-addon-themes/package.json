@@ -1,0 +1,82 @@
+{
+  "name": "storybook-addon-themes",
+  "version": "10.0.0",
+  "description": "A storybook addon to switch between different themes for your preview",
+  "keywords": [
+    "addon",
+    "frontend",
+    "react",
+    "reactjs",
+    "storybook",
+    "storybookjs",
+    "svelte",
+    "theme",
+    "tool",
+    "ui",
+    "user interface",
+    "vue",
+    "vuejs",
+    "storybook-addon",
+    "style"
+  ],
+  "homepage": "https://github.com/tonai/storybook-addon-themes",
+  "bugs": {
+    "url": "https://github.com/tonai/storybook-addon-themes/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tonai/storybook-addon-themes.git",
+    "directory": "packages/storybook-addon-themes"
+  },
+  "license": "MIT",
+  "author": "tonai",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "storybook": {
+    "displayName": "Theme switcher",
+    "supportedFrameworks": [
+      "react",
+      "vue3",
+      "svelte",
+      "html",
+      "preact",
+      "web-components",
+      "angular"
+    ]
+  },
+  "type": "module",
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./preview": {
+      "types": "./dist/preview.d.ts",
+      "default": "./dist/preview.js"
+    },
+    "./manager": "./dist/manager.js",
+    "./preset": "./dist/preset.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "preset.js",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "peerDependencies": {
+    "storybook": "^10.0.0"
+  },
+  "scripts": {
+    "prebuild": "node -e \"fs.rmSync('dist', { recursive: true, force: true })\"",
+    "build": "tsup --config ../../tsup.config.ts",
+    "prepack": "npm run build"
+  }
+}

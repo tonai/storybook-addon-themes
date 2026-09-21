@@ -9,6 +9,6 @@
   },
   "devDependencies": {
     "@storybook/html-vite": "10.6.0",
-    "storybook-addon-themes": "file:../.."
+    "storybook-addon-themes": "*"
   }
 }

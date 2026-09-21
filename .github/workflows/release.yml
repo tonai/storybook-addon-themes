@@ -1,0 +1,50 @@
+name: Release
+
+on:
+  push:
+    branches: [10.x]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    if: github.repository == 'tonai/storybook-addon-themes' && github.ref == 'refs/heads/10.x'
+    uses: ./.github/workflows/ci.yml
+
+  release:
+    needs: validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment: npm
+    permissions:
+      contents: write
+      pull-requests: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm install --global npm@11.19.1
+      - run: npm ci
+      - name: Create release PR or publish packages
+        uses: changesets/action@v2
+        with:
+          github-token: ${{ secrets.RELEASE_GITHUB_TOKEN || github.token }}
+          version-script: npm run version-packages
+          publish-script: npm run release
+          commit-message: 'chore: release packages'
+          pr-title: 'chore: release Storybook 10 addon'
+          create-github-releases: true
+        env:
+          NPM_CONFIG_PROVENANCE: 'true'

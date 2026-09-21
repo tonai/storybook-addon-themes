@@ -6,7 +6,9 @@ vi.mock('storybook/preview-api', () => ({
     effects.push(effect);
   },
 }));
-import preview, { withThemes } from '../../src/preview';
+import preview, {
+  withThemes,
+} from '../../packages/storybook-addon-themes/src/preview';
 const cleanups: Array<() => void> = [];
 afterEach(() => {
   cleanups.splice(0).forEach((cleanup) => cleanup());

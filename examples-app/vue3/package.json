@@ -10,6 +10,6 @@
   "devDependencies": {
     "@storybook/vue3-vite": "10.6.0",
     "vue": "^3.5.0",
-    "storybook-addon-themes": "file:../.."
+    "storybook-addon-themes": "*"
   }
 }

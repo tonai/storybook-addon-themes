@@ -1,5 +1,8 @@
 import { afterEach, describe, expect, it } from 'vitest';
-import { applyTheme, observeTheme } from '../../src/dom';
+import {
+  applyTheme,
+  observeTheme,
+} from '../../packages/storybook-addon-themes/src/dom';
 afterEach(() => {
   document.body.innerHTML = '';
   document.body.className = '';

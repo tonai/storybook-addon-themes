@@ -23,6 +23,6 @@
     "rxjs": "^7.8.0",
     "zone.js": "~0.15.0",
     "typescript": "~5.9.3",
-    "storybook-addon-themes": "file:../.."
+    "storybook-addon-themes": "*"
   }
 }

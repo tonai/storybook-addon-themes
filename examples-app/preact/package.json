@@ -10,6 +10,6 @@
   "devDependencies": {
     "@storybook/preact-vite": "10.6.0",
     "preact": "^10.0.0",
-    "storybook-addon-themes": "file:../.."
+    "storybook-addon-themes": "*"
   }
 }

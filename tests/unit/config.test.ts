@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { getConfig, getSelectedTheme, getThemeClasses } from '../../src/config';
+import {
+  getConfig,
+  getSelectedTheme,
+  getThemeClasses,
+} from '../../packages/storybook-addon-themes/src/config';
 const light = { name: 'light', class: 'light' };
 const dark = { name: 'dark', class: ['dark', 'contrast'] };
 const list = [light, dark];

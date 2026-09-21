@@ -35,9 +35,11 @@ Documentation/tooling changes do not need a changeset. An optional `npm run chan
 
 ## Preparing the initial release
 
-The initial Storybook 10 release notes will be added through a changeset later; there is no handwritten `10.0.0` changelog section. Before enabling publication, prepare that changeset and review the generated version and changelog in the release PR.
+The package uses `9.0.0` solely as an unpublished versioning baseline. The major changeset in `.changeset/storybook-10-release.md` advances it to **10.0.0** and generates the release notes in the version PR.
 
-The addon manifest currently says `10.0.0`, so a new changeset will increment from that version. Choose the intended version baseline when preparing the initial release. Do not enable publication while the current version has no changelog entry: the workflow can publish an unpublished npm version even without pending changesets, but GitHub release creation needs its matching changelog entry.
+Push the baseline and changeset together. Keep the changeset pending on `10.x` until the generated version PR is merged; do not run `npm run release` on the baseline. With this pending changeset, the release workflow opens a version PR instead of publishing `9.0.0`.
+
+Review the generated `10.0.0` manifest, changelog, and lockfile, then merge the version PR to publish after validation. Once that release is complete, continue adding patch/minor/major changesets normally; do not reset the version baseline again.
 
 ## Release PR checks and branch protection
 
